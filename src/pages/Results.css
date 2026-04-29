@@ -1,0 +1,48 @@
+.results-page {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.results-page h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 2rem;
+}
+
+.results-table th,
+.results-table td {
+  padding: 0.8rem;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+
+.results-table th {
+  background-color: #f5f5f5;
+}
+
+.certificate-section {
+  text-align: center;
+}
+
+.download-btn {
+  display: inline-block;
+  padding: 0.6rem 1.2rem;
+  background-color: #28a745;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.download-btn:hover {
+  background-color: #218838;
+}

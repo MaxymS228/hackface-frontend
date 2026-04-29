@@ -1,0 +1,41 @@
+.evaluation-page {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.project-card {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+.project-card h3 {
+  margin-top: 0;
+}
+
+.project-card input,
+.project-card textarea {
+  width: 100%;
+  padding: 0.5rem;
+  margin: 0.4rem 0 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.project-card button {
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.project-card button:hover {
+  background-color: #0056b3;
+}
