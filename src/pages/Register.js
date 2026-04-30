@@ -14,6 +14,7 @@ const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
   
   const navigate = useNavigate();
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,7 +29,7 @@ const Register = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch('/api/register', {
+      const response = await fetch(`${apiUrl}/api/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, password }),
@@ -54,7 +55,7 @@ const Register = () => {
     setError(null);
     
     try {
-      const response = await fetch('/api/google-auth', {
+      const response = await fetch(`${apiUrl}/api/google-auth`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token: tokenResponse.access_token }),

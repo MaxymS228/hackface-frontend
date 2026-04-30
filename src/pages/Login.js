@@ -9,6 +9,7 @@ const Login = ({ setUser }) => {
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const apiUrl = process.env.REACT_APP_API_URL;
   //const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -17,7 +18,7 @@ const Login = ({ setUser }) => {
     setIsLoading(true);
 
     try {
-      const response = await fetch('/api/login', {
+      const response = await fetch(`${apiUrl}/api/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, rememberMe }),
@@ -44,7 +45,7 @@ const Login = ({ setUser }) => {
     setError(null);
 
     try {
-      const response = await fetch('/api/google-auth', {
+      const response = await fetch(`${apiUrl}/api/google-auth`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token: tokenResponse.access_token }),
