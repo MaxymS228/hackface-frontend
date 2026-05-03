@@ -14,6 +14,10 @@ import Evaluation from './pages/Evaluation';
 import Results from './pages/Results';
 import Admin from './pages/Admin';
 import VerifyEmail from './components/VerifyEmail';
+import PublicProfile from './pages/PublicProfile';
+import ProfileSettings from './pages/ProfileSettings';
+
+
 
 const ConditionalNavbar = ({ user, setUser }) => {
     const location = useLocation();
@@ -25,7 +29,8 @@ const ConditionalNavbar = ({ user, setUser }) => {
 };
 
 function App() {
-  const [user, setUser] = useState(null);
+  //const [user, setUser] = useState(null);
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || null);
 
   // Перевірка авторизації при завантаженні сайту
   useEffect(() => {
@@ -74,6 +79,16 @@ function App() {
             <Route path="/admin" element={
               <ProtectedRoute>
                 <Admin />
+              </ProtectedRoute>
+            } />
+            <Route path="/profile/:id" element={
+              <ProtectedRoute>
+                <PublicProfile currentUser={user} />
+              </ProtectedRoute>
+            } />
+            <Route path="/settings" element={
+              <ProtectedRoute>
+                <ProfileSettings user={user} setUser={setUser} />
               </ProtectedRoute>
             } />
           </Routes>

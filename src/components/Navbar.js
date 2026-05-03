@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Terminal, LayoutDashboard, LogOut, LogIn, UserPlus, User, ChevronDown, UserCircle, Users, Trophy } from 'lucide-react';
 
 const Navbar = ({ user, setUser }) => {
   const location = useLocation();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
+  // Синхронізація юзера
   useEffect(() => {
     const storedUserStr = localStorage.getItem('user');
-    
     if (storedUserStr) {
       if (JSON.stringify(user) !== storedUserStr) {
         setUser(JSON.parse(storedUserStr));
@@ -20,8 +21,23 @@ const Navbar = ({ user, setUser }) => {
     }
   }, [location, user, setUser]);
 
+  // Закриття меню при кліку поза його межами
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   const handleLogout = () => {
     localStorage.removeItem('user');
+    localStorage.removeItem('token');
     setUser(null); 
     setIsDropdownOpen(false);
     window.location.href = '/';
@@ -29,7 +45,6 @@ const Navbar = ({ user, setUser }) => {
 
   const isActive = (path) => location.pathname === path;
 
-  // Стиль для центральних посилань
   const navLinkStyle = (path) => `text-sm font-medium transition-colors ${isActive(path) ? 'text-indigo-400' : 'text-slate-400 hover:text-white'}`;
 
   return (
@@ -65,7 +80,7 @@ const Navbar = ({ user, setUser }) => {
                   Dashboard
                 </Link>
 
-                <div className="relative">
+                <div className="relative" ref={dropdownRef}>
                   <button 
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                     className="flex items-center gap-2 text-sm text-slate-200 bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-full border border-slate-700 transition-colors"
@@ -82,15 +97,27 @@ const Navbar = ({ user, setUser }) => {
                         <p className="text-sm font-bold text-white truncate">{user.email || 'Користувач'}</p>
                       </div>
 
-                      <Link to="/profile" className="flex items-center gap-2 px-4 py-2.5 text-sm text-slate-300 hover:bg-slate-700 hover:text-indigo-400 transition-colors">
+                      <Link 
+                        to={`/profile/${user.id}`} 
+                        onClick={() => setIsDropdownOpen(false)} // Закриваємо меню при кліку
+                        className="flex items-center gap-2 px-4 py-2.5 text-sm text-slate-300 hover:bg-slate-700 hover:text-indigo-400 transition-colors"
+                      >
                         <UserCircle size={16} /> Мій профіль
                       </Link>
                       
-                      <Link to="/dashboard" className="flex items-center gap-2 px-4 py-2.5 text-sm text-slate-300 hover:bg-slate-700 hover:text-indigo-400 transition-colors">
+                      <Link 
+                        to="/dashboard" 
+                        onClick={() => setIsDropdownOpen(false)}
+                        className="flex items-center gap-2 px-4 py-2.5 text-sm text-slate-300 hover:bg-slate-700 hover:text-indigo-400 transition-colors"
+                      >
                         <Trophy size={16} /> Мої хакатони
                       </Link>
 
-                      <Link to="/team" className="flex items-center gap-2 px-4 py-2.5 text-sm text-slate-300 hover:bg-slate-700 hover:text-indigo-400 transition-colors">
+                      <Link 
+                        to="/teams" 
+                        onClick={() => setIsDropdownOpen(false)}
+                        className="flex items-center gap-2 px-4 py-2.5 text-sm text-slate-300 hover:bg-slate-700 hover:text-indigo-400 transition-colors"
+                      >
                         <Users size={16} /> Мої команди
                       </Link>
 

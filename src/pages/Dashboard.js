@@ -29,12 +29,17 @@ const Dashboard = () => {
 
     const fetchDashboardData = async () => {
       try {
-        const userId = storedUser._id || storedUser.id; 
-        const response = await fetch(`${apiUrl}/api/dashboard/${userId}`, {
-          method: 'GET',
+        //const userId = storedUser._id || storedUser.id; 
+        // const response = await fetch(`${apiUrl}/api/dashboard/${userId}`, {
+        //   method: 'GET',
+        //   headers: {
+        //     'Authorization': `Bearer ${token}`,
+        //     'Content-Type': 'application/json'
+        //   }
+        // });
+        const response = await fetch(`${apiUrl}/api/dashboard`, {
           headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
+            'Authorization': `Bearer ${localStorage.getItem('token')}` 
           }
         });
 
@@ -58,7 +63,6 @@ const Dashboard = () => {
     navigate('/');
   };
 
-  // Допоміжна функція для активних кнопок меню
   const isActive = (path) => location.pathname === path;
 
   if (!user) return null;
@@ -66,7 +70,7 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-[#020617] text-slate-200 flex overflow-hidden">
       
-      {/* 🧭 Sidebar (Бокова панель) */}
+      {/* Бокова панель */}
       <aside className={`
         ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} 
         md:translate-x-0 
@@ -108,7 +112,7 @@ const Dashboard = () => {
         </div>
 
         <div className="mt-auto p-8 space-y-2 border-t border-slate-800/50">
-          <button onClick={() => navigate('/profile')} className="w-full flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white rounded-xl transition-all"><Settings size={20} /> Налаштування</button>
+          <button onClick={() => navigate(`/settings`)} className="w-full flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white rounded-xl transition-all"><Settings size={20} /> Налаштування профілю</button>
           <button onClick={handleLogout} className="w-full flex items-center gap-3 px-4 py-3 text-rose-400 hover:bg-rose-500/10 rounded-xl transition-all"><LogOut size={20} /> Вийти</button>
         </div>
       </aside>
