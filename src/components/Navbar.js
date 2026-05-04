@@ -98,8 +98,8 @@ const Navbar = ({ user, setUser }) => {
                       </div>
 
                       <Link 
-                        to={`/profile/${user.id}`} 
-                        onClick={() => setIsDropdownOpen(false)} // Закриваємо меню при кліку
+                        to={`/profile/${user._id || user.id}`} 
+                        onClick={() => setIsDropdownOpen(false)} 
                         className="flex items-center gap-2 px-4 py-2.5 text-sm text-slate-300 hover:bg-slate-700 hover:text-indigo-400 transition-colors"
                       >
                         <UserCircle size={16} /> Мій профіль
