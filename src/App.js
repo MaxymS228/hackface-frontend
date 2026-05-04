@@ -16,6 +16,7 @@ import Admin from './pages/Admin';
 import VerifyEmail from './components/VerifyEmail';
 import PublicProfile from './pages/PublicProfile';
 import ProfileSettings from './pages/ProfileSettings';
+import CreateHackathon from './pages/CreateHackathon';
 
 
 
@@ -89,6 +90,11 @@ function App() {
             <Route path="/settings" element={
               <ProtectedRoute>
                 <ProfileSettings user={user} setUser={setUser} />
+              </ProtectedRoute>
+            } />
+            <Route path="/create-hackathon" element={
+              <ProtectedRoute>
+                <CreateHackathon />
               </ProtectedRoute>
             } />
           </Routes>
