@@ -23,6 +23,8 @@ const CreateHackathon = () => {
   const [bannerPreview, setBannerPreview] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const topRef = useRef(null);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -38,8 +40,31 @@ const CreateHackathon = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrorMessage('');
     setIsLoading(true);
     setError('');
+
+    const start = new Date(formData.startDate);
+    const end = new Date(formData.endDate);
+    const deadline = new Date(formData.registrationDeadline);
+    const now = new Date();
+    const showError = (msg) => {
+      setErrorMessage(msg);
+      setIsLoading(false);
+      if (topRef.current) {
+        topRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    };
+
+    if (deadline < now) {
+      return showError('Дедлайн реєстрації не може бути в минулому часі!');
+    }
+    if (deadline > start) {
+      return showError('Дедлайн реєстрації має закінчитися ДО початку хакатону!');
+    }
+    if (start >= end) {
+      return showError('Дата завершення має бути пізніше за дату початку!');
+    }
 
     try {
       const token = localStorage.getItem('token');
@@ -66,7 +91,7 @@ const CreateHackathon = () => {
       const data = await response.json();
 
       if (response.ok) {
-        // Перенаправляємо на сторінку створеного хакатону (або на список)
+        // Перенаправляємо на сторінку створеного хакатону
         navigate(`/hackathons/${data.hackathon._id}`);
       } else {
         setError(data.message || 'Помилка при створенні хакатону');
@@ -79,7 +104,7 @@ const CreateHackathon = () => {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto py-8 px-4 sm:px-6">
+    <div className="w-full max-w-4xl mx-auto py-8 px-4 sm:px-6" ref={topRef}>>
       <div className="mb-8">
         <h1 className="text-3xl font-extrabold text-white tracking-tight flex items-center gap-3">
           <Rocket className="text-indigo-500" size={32} />
@@ -92,6 +117,14 @@ const CreateHackathon = () => {
         <div className="mb-6 p-4 rounded-xl flex items-start gap-3 bg-rose-500/10 border border-rose-500/20 text-rose-400">
           <AlertCircle size={22} />
           <p className="text-base font-medium">{error}</p>
+        </div>
+      )}
+      {errorMessage && (
+        <div className="mb-6 p-4 bg-red-500/10 border border-red-500/50 rounded-xl flex items-center gap-3 text-red-500">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+          <p className="font-medium">{errorMessage}</p>
         </div>
       )}
 
@@ -165,7 +198,7 @@ const CreateHackathon = () => {
                 <Calendar size={18} className="text-slate-500" />
               </div>
               <input
-                type="date" name="startDate" value={formData.startDate} onChange={handleChange} required
+                type="datetime-local" name="startDate" value={formData.startDate} onChange={handleChange} required
                 className="w-full pr-4 pl-11 py-3.5 bg-slate-900 border border-slate-700 rounded-xl text-white focus:ring-1 focus:ring-indigo-500 css-color-scheme-dark"
                 style={{ width: '100%', paddingLeft: '48px', boxSizing: 'border-box' }}
               />
@@ -179,7 +212,7 @@ const CreateHackathon = () => {
                 <Calendar size={18} className="text-slate-500" />
               </div>
               <input
-                type="date" name="endDate" value={formData.endDate} onChange={handleChange} required
+                type="datetime-local" name="endDate" value={formData.endDate} onChange={handleChange} required
                 className="w-full pr-4 pl-11 py-3.5 bg-slate-900 border border-slate-700 rounded-xl text-white focus:ring-1 focus:ring-indigo-500 css-color-scheme-dark"
                 style={{ width: '100%', paddingLeft: '48px', boxSizing: 'border-box' }}
               />
@@ -193,7 +226,7 @@ const CreateHackathon = () => {
                 <Calendar size={18} className="text-slate-500" />
               </div>
               <input
-                type="date" name="registrationDeadline" value={formData.registrationDeadline} onChange={handleChange}
+                type="datetime-local" name="registrationDeadline" value={formData.registrationDeadline} onChange={handleChange}
                 className="w-full pr-4 pl-11 py-3.5 bg-slate-900 border border-slate-700 rounded-xl text-white focus:ring-1 focus:ring-indigo-500 css-color-scheme-dark"
                 style={{ width: '100%', paddingLeft: '48px', boxSizing: 'border-box' }}
               />

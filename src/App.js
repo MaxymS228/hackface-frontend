@@ -17,6 +17,7 @@ import VerifyEmail from './components/VerifyEmail';
 import PublicProfile from './pages/PublicProfile';
 import ProfileSettings from './pages/ProfileSettings';
 import CreateHackathon from './pages/CreateHackathon';
+import HackathonDetails from './components/HackathonDetails';
 
 
 
@@ -97,6 +98,11 @@ function App() {
                 <CreateHackathon />
               </ProtectedRoute>
             } />
+            <Route path="/hackathons/:id" element={
+              <ProtectedRoute>
+                <HackathonDetails />
+              </ProtectedRoute>
+             } />
           </Routes>
         </main>
 

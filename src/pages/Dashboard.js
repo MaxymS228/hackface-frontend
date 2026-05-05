@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { 
   Layout, Users, Code, Award, Settings, LogOut, Terminal,
-  Menu, X, Loader2, ExternalLink, Search
+  Menu, X, Loader2, ExternalLink, Search, Trophy, Plus, Calendar, ChevronRight
 } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 const Dashboard = () => {
-  // Ініціалізація стейтів
   const [user, setUser] = useState(null);
-  const [dashboardData, setDashboardData] = useState({ roles: [], teams: [], projects: [] });
+  const [dashboardData, setDashboardData] = useState({ roles: [], teams: [], projects: [], hackathons: [] });
   const [isLoading, setIsLoading] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -29,14 +28,6 @@ const Dashboard = () => {
 
     const fetchDashboardData = async () => {
       try {
-        //const userId = storedUser._id || storedUser.id; 
-        // const response = await fetch(`${apiUrl}/api/dashboard/${userId}`, {
-        //   method: 'GET',
-        //   headers: {
-        //     'Authorization': `Bearer ${token}`,
-        //     'Content-Type': 'application/json'
-        //   }
-        // });
         const response = await fetch(`${apiUrl}/api/dashboard`, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}` 
@@ -61,6 +52,16 @@ const Dashboard = () => {
     localStorage.removeItem('user');
     localStorage.removeItem('token');
     navigate('/');
+  };
+
+  const getDynamicStatus = (startDate, endDate) => {
+    const now = new Date();
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    if (now < start) return 'Upcoming';
+    if (now >= start && now <= end) return 'Ongoing';
+    return 'Completed';
   };
 
   const isActive = (path) => location.pathname === path;
@@ -117,9 +118,9 @@ const Dashboard = () => {
         </div>
       </aside>
 
-      {/* 📄 Головний контент */}
+      {/* Головний контент */}
       <main className="flex-1 h-screen overflow-y-auto custom-scrollbar">
-        {/* 📱 Мобільний хедер */}
+        {/* Мобільний хедер */}
         <div className="md:hidden flex items-center justify-between p-4 bg-[#0B1120] border-b border-slate-800">
              <span className="text-xl font-bold text-white">Hack<span className="text-indigo-400">Face</span></span>
              <button onClick={() => setIsMobileMenuOpen(true)} className="p-2 bg-slate-800 rounded-lg"><Menu size={24}/></button>
@@ -139,14 +140,14 @@ const Dashboard = () => {
                   <p className="text-slate-400">Ось що відбувається у ваших проєктах сьогодні.</p>
                 </div>
                 
-                <div onClick={() => navigate('/profile')} className="flex items-center gap-4 bg-slate-900/50 backdrop-blur-md p-3 pr-6 rounded-2xl border border-slate-700/50">
+                <div onClick={() => navigate('/profile')} className="flex items-center gap-4 bg-slate-900/50 backdrop-blur-md p-3 pr-6 rounded-2xl border border-slate-700/50 cursor-pointer hover:border-indigo-500/50 transition-colors">
                   <div className="w-12 h-12 bg-gradient-to-tr from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center text-white text-xl font-bold shadow-lg">
                     {user.name.charAt(0).toUpperCase()}
                   </div>
                   <div className="text-left">
                     <p className="text-sm font-bold text-white leading-tight">{user.name}</p>
                     <p className="text-[10px] text-indigo-400 uppercase tracking-[0.2em] font-black mt-1">
-                      {dashboardData.roles.length > 0 ? dashboardData.roles[0].role : 'Participant'}
+                      {dashboardData.roles && dashboardData.roles.length > 0 ? dashboardData.roles[0].role : 'Participant'}
                     </p>
                   </div>
                 </div>
@@ -165,7 +166,7 @@ const Dashboard = () => {
                   </div>
 
                   <div className="relative z-10">
-                    {dashboardData.teams.length > 0 ? (
+                    {dashboardData.teams && dashboardData.teams.length > 0 ? (
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         {dashboardData.teams.map((t) => (
                           <div key={t._id} className="p-6 bg-slate-800/40 rounded-2xl border border-slate-700/50 hover:border-indigo-500/50 transition-all group cursor-pointer">
@@ -208,7 +209,7 @@ const Dashboard = () => {
                       <Code className="text-indigo-400" size={24} /> Останні проєкти
                     </h3>
                     
-                    {dashboardData.projects.length > 0 ? (
+                    {dashboardData.projects && dashboardData.projects.length > 0 ? (
                       <div className="space-y-4">
                         {dashboardData.projects.map((p) => (
                           <div key={p._id} className="p-5 bg-slate-800/30 rounded-2xl border border-slate-700/30 hover:bg-slate-800/50 transition-all">
@@ -227,6 +228,73 @@ const Dashboard = () => {
                 </div>
 
               </div>
+
+              {/* Мої хакатони */}
+              <div className="mt-8 bg-slate-900/40 border border-slate-800/60 rounded-[2rem] p-8 backdrop-blur-sm">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+                  <h3 className="text-2xl font-bold text-white flex items-center gap-3">
+                    <Trophy className="text-indigo-400" size={28} /> Мої хакатони
+                  </h3>
+                  
+                  <button 
+                    onClick={() => navigate('/create-hackathon')}
+                    className="flex items-center gap-2 px-6 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl transition-all shadow-lg shadow-indigo-600/20"
+                  >
+                    <Plus size={18} /> Створити хакатон
+                  </button>
+                </div>
+
+                {dashboardData.hackathons && dashboardData.hackathons.length > 0 ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {dashboardData.hackathons.map((hack) => (
+                      <div key={hack._id} onClick={() => navigate(`/hackathons/${hack._id}`)} className="group bg-slate-800/40 border border-slate-700/50 hover:border-indigo-500/50 rounded-2xl p-6 cursor-pointer transition-all hover:-translate-y-1">
+                        
+                        <div className="flex justify-between items-start mb-4">
+                          <span className={`px-3 py-1 text-xs font-bold rounded-full border ${
+                            hack.userRole === 'Organizer' ? 'bg-amber-500/10 text-amber-400 border-amber-500/20' :
+                            hack.userRole === 'Judge' ? 'bg-purple-500/10 text-purple-400 border-purple-500/20' :
+                            hack.userRole === 'Mentor' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' :
+                            'bg-blue-500/10 text-blue-400 border-blue-500/20' 
+                          }`}>
+                            {hack.userRole === 'Organizer' ? 'Організатор' :
+                             hack.userRole === 'Judge' ? 'Журі' :
+                             hack.userRole === 'Mentor' ? 'Ментор' : 'Учасник'}
+                          </span>
+                          
+                          <span className="text-xs font-medium text-slate-500 px-2 py-1 bg-slate-800 rounded-lg">
+                            {getDynamicStatus(hack.startDate, hack.endDate) === 'Upcoming' ? 'Скоро' : getDynamicStatus(hack.startDate, hack.endDate) === 'Ongoing' ? 'Активний' : 'Завершено'}
+                          </span>
+                        </div>
+
+                        <h4 className="text-xl font-bold text-white mb-2 group-hover:text-indigo-400 transition-colors line-clamp-1">
+                          {hack.title}
+                        </h4>
+                        
+                        <div className="flex items-center gap-2 text-sm text-slate-400 mb-6">
+                          <Calendar size={14} />
+                          <span>{new Date(hack.startDate).toLocaleDateString('uk-UA')}</span>
+                        </div>
+
+                        <div className="flex items-center justify-between text-sm font-medium text-indigo-400 group-hover:text-indigo-300">
+                          <span>Перейти до хакатону</span>
+                          <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-12 border-2 border-dashed border-slate-800 rounded-3xl">
+                    <p className="text-slate-400 mb-6">Ви ще не берете участь у жодному хакатоні.</p>
+                    <button 
+                      onClick={() => navigate('/hackathons')}
+                      className="text-indigo-400 hover:text-indigo-300 font-medium flex items-center gap-2 mx-auto transition-colors"
+                    >
+                      Переглянути доступні хакатони <ChevronRight size={16} />
+                    </button>
+                  </div>
+                )}
+              </div>
+
             </>
           )}
         </div>
