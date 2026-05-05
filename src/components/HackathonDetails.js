@@ -15,7 +15,6 @@ const HackathonDetails = () => {
   const [teamTab, setTeamTab] = useState('Organizer'); 
   const [isParticipantsModalOpen, setIsParticipantsModalOpen] = useState(false);
   
-  // 🔥 Нові стани для логіки участі
   const [isActionLoading, setIsActionLoading] = useState(false);
   const [isLeaveModalOpen, setIsLeaveModalOpen] = useState(false);
   
@@ -134,8 +133,8 @@ const HackathonDetails = () => {
   const formatDateWithTime = (dateString) => {
     if (!dateString) return '';
     const date = new Date(dateString);
-    const formattedDate = date.toLocaleDateString('uk-UA', { day: 'numeric', month: 'long', year: 'numeric' });
-    const formattedTime = date.toLocaleTimeString('uk-UA', { hour: '2-digit', minute: '2-digit' });
+    const formattedDate = date.toLocaleDateString('uk-UA', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+    const formattedTime = date.toLocaleTimeString('uk-UA', { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' });
     return `${formattedDate}, ${formattedTime}`;
   };
   
