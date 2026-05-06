@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Save, Loader2, User, Briefcase, Globe, FileText, AlertCircle, CheckCircle2, Wrench, Camera, Lock, Key } from 'lucide-react';
+import { Save, Loader2, User, Briefcase, Globe, FileText, AlertCircle, CheckCircle2, Wrench, Camera, Lock, Key, X } from 'lucide-react';
 
 const ProfileSettings = ({ user, setUser }) => {
   const navigate = useNavigate();
@@ -337,11 +337,18 @@ const ProfileSettings = ({ user, setUser }) => {
           </div>
         </div>
 
-        <div className="pt-4 border-t border-slate-700/50">
+        <div className="pt-4 border-t border-slate-700/50 flex flex-col sm:flex-row sm:justify-end gap-4">
+          <button
+            type="button"
+            onClick={() => navigate(`/profile/${user._id || user.id}`)}
+            className="px-8 py-4 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold rounded-xl transition-all border border-slate-700 flex items-center justify-center gap-2"
+          >
+            <X size={20} /> Скасувати
+          </button>
           <button
             type="submit"
             disabled={isSaving}
-            className="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3.5 px-8 rounded-xl transition-all shadow-lg shadow-indigo-600/25 disabled:opacity-70 ml-auto"
+            className="flex sm:w-auto items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3.5 px-8 rounded-xl transition-all shadow-lg shadow-indigo-600/25 disabled:opacity-70"
           >
             {isSaving ? <Loader2 size={20} className="animate-spin" /> : <Save size={20} />}
             Зберегти профіль
@@ -350,7 +357,7 @@ const ProfileSettings = ({ user, setUser }) => {
 
       </form>
 
-      {/* --- БЛОК БЕЗПЕКИ ТА ЗМІНИ ПАРОЛЯ --- */}
+      {/* Блок: Безпека та зміна пароля */}
       <div className="mt-8 bg-slate-800/80 backdrop-blur-sm border border-slate-700 p-6 sm:p-8 rounded-3xl shadow-xl">
         <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
           <Lock size={24} className="text-indigo-500" />

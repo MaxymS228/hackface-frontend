@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Rocket, Image as ImageIcon, Calendar, Tag, AlignLeft, Type, MapPin, Trophy, Loader2, AlertCircle } from 'lucide-react';
+import { Rocket, Image as ImageIcon, Calendar, Tag, AlignLeft, Type, MapPin, Trophy, Loader2, AlertCircle, X } from 'lucide-react';
 
 const CreateHackathon = () => {
   const navigate = useNavigate();
@@ -104,7 +104,7 @@ const CreateHackathon = () => {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto py-8 px-4 sm:px-6" ref={topRef}>>
+    <div className="w-full max-w-4xl mx-auto py-8 px-4 sm:px-6" ref={topRef}>
       <div className="mb-8">
         <h1 className="text-3xl font-extrabold text-white tracking-tight flex items-center gap-3">
           <Rocket className="text-indigo-500" size={32} />
@@ -296,11 +296,18 @@ const CreateHackathon = () => {
         </div>
 
         {/* Кнопка сабміту */}
-        <div className="pt-6 border-t border-slate-700/50">
+        <div className="pt-6 border-t border-slate-700/50 flex flex-col sm:flex-row sm:justify-end gap-4">
+          <button
+            type="button"
+            onClick={() => navigate(`/dashboard`)}
+            className="px-8 py-4 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold rounded-xl transition-all border border-slate-700 flex items-center justify-center gap-2"
+          >
+            <X size={20} /> Скасувати
+          </button>
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full sm:w-auto flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-4 px-10 rounded-xl transition-all shadow-lg shadow-indigo-600/25 disabled:opacity-70 ml-auto"
+            className="w-full sm:w-auto flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-4 px-10 rounded-xl transition-all shadow-lg shadow-indigo-600/25 disabled:opacity-70"
           >
             {isLoading ? <Loader2 size={20} className="animate-spin" /> : <Rocket size={20} />}
             {isLoading ? 'Створення...' : 'Запустити Хакатон'}

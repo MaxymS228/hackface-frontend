@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, Outlet, useParams, useNavigate } from 'react-router-dom';
-import { 
-  Settings, 
-  ShieldCheck, 
-  Users, 
-  ChevronLeft, 
-  Loader2 
-} from 'lucide-react';
+import { Settings, ShieldCheck, Users, ChevronLeft, Loader2 } from 'lucide-react';
 
 const HackathonManage = () => {
   const { id } = useParams();
