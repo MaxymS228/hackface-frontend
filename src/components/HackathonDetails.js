@@ -1,10 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { 
-  Calendar, MapPin, Trophy, Users, Clock, Tag, 
-  ChevronLeft, Edit, ExternalLink, Loader2, PlayCircle,
-  LogOut, AlertTriangle // 🔥 Додали нові іконки
-} from 'lucide-react';
+import { Calendar, MapPin, Trophy, Users, Clock, Tag, ChevronLeft, ExternalLink, Loader2, PlayCircle, LogOut, AlertTriangle, LayoutDashboard } from 'lucide-react';
 
 const HackathonDetails = () => {
   const { id } = useParams();
@@ -17,6 +13,7 @@ const HackathonDetails = () => {
   
   const [isActionLoading, setIsActionLoading] = useState(false);
   const [isLeaveModalOpen, setIsLeaveModalOpen] = useState(false);
+  const [isRegistrationOpen, setIsRegistrationOpen] = useState(false);
   
   const user = JSON.parse(localStorage.getItem('user'));
   const apiUrl = process.env.REACT_APP_API_URL;
@@ -37,6 +34,27 @@ const HackathonDetails = () => {
   useEffect(() => {
     fetchHackathon();
   }, [fetchHackathon]);
+
+  useEffect(() => {
+    // Якщо даних про хакатон ще немає, нічого не робимо
+    if (!hackathon?.registrationDeadline) return;
+
+    // Функція перевірки часу
+    const checkStatus = () => {
+      const now = new Date();
+      const deadline = new Date(hackathon.registrationDeadline);
+      setIsRegistrationOpen(now < deadline);
+    };
+
+    // Перевіряємо одразу під час рендеру
+    checkStatus();
+
+    // Запускаємо перевірку кожну секунду (1000 мілісекунд)
+    const intervalId = setInterval(checkStatus, 1000);
+
+    // Обов'язково очищаємо таймер, коли користувач йде зі сторінки
+    return () => clearInterval(intervalId);
+  }, [hackathon?.registrationDeadline]);
 
   const handleJoin = async () => {
     if (!user) {
@@ -128,13 +146,13 @@ const HackathonDetails = () => {
     (member.user?._id === currentUserId || member.user === currentUserId)
   );
 
-  const isRegistrationOpen = new Date() <= new Date(hackathon.registrationDeadline);
+  //const isRegistrationOpen = new Date() <= new Date(hackathon.registrationDeadline);
 
   const formatDateWithTime = (dateString) => {
     if (!dateString) return '';
     const date = new Date(dateString);
-    const formattedDate = date.toLocaleDateString('uk-UA', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
-    const formattedTime = date.toLocaleTimeString('uk-UA', { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' });
+    const formattedDate = date.toLocaleDateString('uk-UA', { day: 'numeric', month: 'long', year: 'numeric' }); // , timeZone: 'UTC'
+    const formattedTime = date.toLocaleTimeString('uk-UA', { hour: '2-digit', minute: '2-digit' }); // , timeZone: 'UTC'
     return `${formattedDate}, ${formattedTime}`;
   };
   
@@ -358,10 +376,10 @@ const HackathonDetails = () => {
               {/* Кнопки дій */}
               {isOrganizer ? (
                 <button 
-                  onClick={() => navigate(`/hackathons/${hackathon._id}/edit`)}
-                  className="w-full py-4 flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl transition-all border border-slate-600"
+                  onClick={() => navigate(`/hackathons/${hackathon._id}/manage`)}
+                  className="w-full py-4 flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl transition-all border border-slate-600 shadow-lg"
                 >
-                  <Edit size={20} /> Редагувати хакатон
+                  <LayoutDashboard size={20} /> Панель управління
                 </button>
               ) : isParticipant ? (
                 <button 

@@ -19,6 +19,11 @@ import ProfileSettings from './pages/ProfileSettings';
 import CreateHackathon from './pages/CreateHackathon';
 import HackathonDetails from './components/HackathonDetails';
 
+import HackathonManage from './components/HackathonManage';
+import ManageSettings from './components/ManageSettings';
+import ManageTeam from './components/ManageTeam';
+import ManageParticipants from './components/ManageParticipants';
+
 
 
 const ConditionalNavbar = ({ user, setUser }) => {
@@ -103,6 +108,14 @@ function App() {
                 <HackathonDetails />
               </ProtectedRoute>
              } />
+
+            <Route path="/hackathons/:id/manage" element={<HackathonManage />}>
+              <Route index element={<ManageSettings />} /> {/* /manage */}
+              
+              <Route path="team" element={<ManageTeam />} /> {/* /manage/team */}
+              <Route path="participants" element={<ManageParticipants />} /> {/* /manage/participants */}
+            </Route>
+
           </Routes>
         </main>
 
