@@ -18,7 +18,7 @@ const Admin = () => {
         .then(data => setHackathons(data))
         .catch(err => console.error('Помилка завантаження хакатонів:', err));
     }
-  }, [user]);
+  }, [user, apiUrl]);
 
   const handleCreate = async (e) => {
     e.preventDefault();

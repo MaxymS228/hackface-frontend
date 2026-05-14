@@ -41,7 +41,7 @@ const VerifyEmail = () => {
       setStatus('error');
       setMessage('Токен підтвердження не знайдено.');
     }
-  }, [token]);
+  }, [token, apiUrl]);
 
   return (
     <div className="flex-1 flex items-center justify-center w-full py-12 px-4">

@@ -21,7 +21,7 @@ const Submit = () => {
         })
         .catch(err => console.error('Помилка завантаження команди:', err));
     }
-  }, []);
+  }, [apiUrl]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

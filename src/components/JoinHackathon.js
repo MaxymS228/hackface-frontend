@@ -30,7 +30,7 @@ const JoinHackathon = () => {
     } finally {
       setFetching(false);
     }
-  }, [id]);
+  }, [id, apiUrl]);
 
   useEffect(() => {
     const token = localStorage.getItem('token');

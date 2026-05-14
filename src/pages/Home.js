@@ -4,7 +4,6 @@ import { Rocket, Calendar, MapPin, Trophy, Users, ArrowRight, Code } from 'lucid
 
 const Home = () => {
 
-  const apiUrl = process.env.REACT_APP_API_URL;
   // Тестові дані для прототипу
   const mockHackathons = [
     {
