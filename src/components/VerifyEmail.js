@@ -5,6 +5,7 @@ import { Loader2, CheckCircle, XCircle, ArrowRight } from 'lucide-react';
 const VerifyEmail = () => {
   // Дістаємо токен з URL (з маршруту /verify/:token)
   const { token } = useParams();
+  const apiUrl = process.env.REACT_APP_API_URL;
   
   const [status, setStatus] = useState('loading'); // 'loading', 'success', 'error'
   const [message, setMessage] = useState('');
@@ -13,7 +14,7 @@ const VerifyEmail = () => {
     const verifyUserEmail = async () => {
       try {
         // Відправляємо токен на ваш бекенд
-        const response = await fetch(`/api/verify/${token}`, {
+        const response = await fetch(`${apiUrl}/api/verify/${token}`, {
           method: 'GET',
         });
 

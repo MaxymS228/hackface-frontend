@@ -9,6 +9,8 @@ const JoinHackathon = () => {
   const [inviteInfo, setInviteInfo] = useState(null);
   const [fetching, setFetching] = useState(true);
 
+  const apiUrl = process.env.REACT_APP_API_URL;
+
   // Функція завантаження деталей запрошення
   const fetchInviteDetails = useCallback(async () => {
     try {
