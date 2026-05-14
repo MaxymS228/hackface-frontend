@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Trophy, Medal, Award, DownloadCloud, Star, ChevronRight } from 'lucide-react';
+import { Trophy, Medal, Award, DownloadCloud, Star } from 'lucide-react';
 
 const Results = () => {
   // Фейкові результати (пізніше — з API)
