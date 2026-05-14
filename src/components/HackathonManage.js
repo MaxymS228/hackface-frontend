@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, Outlet, useParams, useNavigate } from 'react-router-dom';
-import { Settings, ShieldCheck, Users, ChevronLeft, Loader2 } from 'lucide-react';
+import { Settings, ShieldCheck, Users, ChevronLeft, Loader2, BarChart3 } from 'lucide-react';
 
 const HackathonManage = () => {
   const { id } = useParams();
@@ -38,7 +38,7 @@ const HackathonManage = () => {
   const menuItems = [
     { 
       path: '.', // Точка означає базовий шлях /hackathons/:id/manage
-      icon: <Settings size={20} />, 
+      icon: <BarChart3 size={20} />, 
       label: 'Огляд' 
     },
     { 

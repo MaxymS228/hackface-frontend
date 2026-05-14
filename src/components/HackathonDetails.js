@@ -36,6 +36,29 @@ const HackathonDetails = () => {
   }, [fetchHackathon]);
 
   useEffect(() => {
+    const recordView = async () => {
+      // Перевіряємо, чи ми вже рахували перегляд у цій вкладці
+      if (!sessionStorage.getItem(`viewed_${id}`)) {
+        try {
+          const token = localStorage.getItem('token');
+          const headers = token ? { Authorization: `Bearer ${token}` } : {};
+          
+          await fetch(`${process.env.REACT_APP_API_URL}/api/hackathons/${id}/view`, {
+            method: 'POST',
+            headers: headers
+          });
+          
+          sessionStorage.setItem(`viewed_${id}`, 'true');
+        } catch (error) {
+          console.error('Помилка зарахування перегляду', error);
+        }
+      }
+    };
+
+    recordView();
+  }, [id]);
+
+  useEffect(() => {
     // Якщо даних про хакатон ще немає, нічого не робимо
     if (!hackathon?.registrationDeadline) return;
 
