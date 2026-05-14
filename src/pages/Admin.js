@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './Admin.css';
 
 const Admin = () => {
+  const apiUrl = process.env.REACT_APP_API_URL;
   const [hackathons, setHackathons] = useState([]);
   const [newHackathon, setNewHackathon] = useState('');
   const [startDate, setStartDate] = useState('');
@@ -12,7 +13,7 @@ const Admin = () => {
   // Завантажити хакатони організатора
   useEffect(() => {
     if (user?.id) {
-      fetch(`http://localhost:5000/api/hackathons?organizerId=${user.id}`)
+      fetch(`${apiUrl}/api/hackathons?organizerId=${user.id}`)
         .then(res => res.json())
         .then(data => setHackathons(data))
         .catch(err => console.error('Помилка завантаження хакатонів:', err));
@@ -24,7 +25,7 @@ const Admin = () => {
     if (!newHackathon.trim()) return;
 
     try {
-      const response = await fetch('http://localhost:5000/api/hackathons', {
+      const response = await fetch(`${apiUrl}/api/hackathons`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

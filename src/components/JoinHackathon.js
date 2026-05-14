@@ -15,7 +15,7 @@ const JoinHackathon = () => {
   const fetchInviteDetails = useCallback(async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/hackathons/members/${id}/details`, 
+      const response = await fetch(`${apiUrl}/api/hackathons/members/${id}/details`, 
       {
         headers: {
           'Authorization': `Bearer ${token}`
@@ -46,7 +46,7 @@ const JoinHackathon = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      await fetch(`${process.env.REACT_APP_API_URL}/api/hackathons/members/${id}/respond`, {
+      await fetch(`${apiUrl}/api/hackathons/members/${id}/respond`, {
         method: 'PATCH',
         headers: { 
           'Content-Type': 'application/json',

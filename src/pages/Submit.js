@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './Submit.css';
 
 const Submit = () => {
+  const apiUrl = process.env.REACT_APP_API_URL;
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [repoLink, setRepoLink] = useState('');
@@ -11,7 +12,7 @@ const Submit = () => {
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user'));
     if (user?.id) {
-      fetch(`http://localhost:5000/api/my-team?userId=${user.id}`)
+      fetch(`${apiUrl}/api/my-team?userId=${user.id}`)
         .then(res => res.json())
         .then(data => {
           if (data?._id) {
@@ -37,7 +38,7 @@ const Submit = () => {
     if (file) formData.append('file', file);
 
     try {
-      const response = await fetch('http://localhost:5000/api/projects', {
+      const response = await fetch(`${apiUrl}/api/projects`, {
         method: 'POST',
         body: formData,
       });

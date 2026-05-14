@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Users, Plus, LogIn, Code, Hash, Copy, CheckCircle2, User, ShieldAlert } from 'lucide-react';
 
 const Team = () => {
+  const apiUrl = process.env.REACT_APP_API_URL;
   const [teamName, setTeamName] = useState('');
   const [joinTeamId, setJoinTeamId] = useState('');
   const [teamCreated, setTeamCreated] = useState(false);
@@ -25,7 +26,7 @@ const Team = () => {
   const handleCreateTeam = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:5000/api/teams', {
+      const response = await fetch(`${apiUrl}/api/teams`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -52,7 +53,7 @@ const Team = () => {
   const handleJoinTeam = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:5000/api/teams/join', {
+      const response = await fetch(`${apiUrl}/api/teams/join`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
