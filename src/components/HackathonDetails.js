@@ -138,13 +138,20 @@ const HackathonDetails = () => {
 
   // Перевірка прав і статусів
   const currentUserId = user?._id || user?.id;
-  const isOrganizer = user && (hackathon.organizerId === currentUserId);
+
+  const isMainOrganizer = user && (hackathon.organizerId === currentUserId);
+  const isCoOrganizer = user && (hackathon.members || []).some(member => member.role === 'Co-organizer' && (member.user?._id === currentUserId || member.user === currentUserId));
+  const isParticipant = user && (hackathon.members || []).some(member => member.role === 'Participant' && (member.user?._id === currentUserId || member.user === currentUserId));
+  const isJuryOrMentor = user && (hackathon.members || []).some(member => ['Jury', 'Mentor'].includes(member.role) && (member.user?._id === currentUserId || member.user === currentUserId));
+  const isAnyMember = isMainOrganizer || isCoOrganizer || isParticipant || isJuryOrMentor;
+
+  //const isOrganizer = user && ((hackathon.organizerId === currentUserId) || (hackathon.members || []).some( member => member.role === 'Co-organizer' && (member.user?._id === currentUserId || member.user === currentUserId)));
   
   // Перевіряємо, чи є поточний користувач учасником
-  const isParticipant = user && (hackathon.members || []).some(
-    member => member.role === 'Participant' && 
-    (member.user?._id === currentUserId || member.user === currentUserId)
-  );
+  // const isParticipant = user && (hackathon.members || []).some(
+  //   member => member.role === 'Participant' && 
+  //   (member.user?._id === currentUserId || member.user === currentUserId)
+  // );
 
   //const isRegistrationOpen = new Date() <= new Date(hackathon.registrationDeadline);
 
@@ -240,7 +247,7 @@ const HackathonDetails = () => {
 
               <div className="flex w-full gap-2 p-1 bg-slate-800/50 border border-slate-700/50 rounded-xl mb-6">
                 {[
-                  { id: 'Organizer', label: 'Організатори' },
+                  { id: 'Organizer', label: 'Організатори'},
                   { id: 'Jury', label: 'Журі' },
                   { id: 'Mentor', label: 'Ментори' }
                 ].map((tab) => {
@@ -264,30 +271,60 @@ const HackathonDetails = () => {
 
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                 {(hackathon.members || [])
-                  .filter(member => member.role === teamTab)
-                  .map(member => (
-                    <div
-                      key={member._id}
-                      onClick={() => navigate(`/profile/${member.user._id}`)}
-                      className="group flex flex-col items-center p-4 bg-slate-900/50 rounded-xl hover:bg-slate-700/50 transition-all cursor-pointer border border-transparent hover:border-slate-600 hover:-translate-y-1 shadow-lg shadow-transparent hover:shadow-black/20"
-                    >
-                      <img 
-                        src={member.user.avatarUrl} 
-                        alt={member.user.name} 
-                        className="w-16 h-16 sm:w-20 sm:h-20 rounded-full mb-3 object-cover border-2 border-indigo-500/30 group-hover:border-indigo-400 transition-colors" 
-                      />
-                      <p className="text-white font-medium text-center text-sm group-hover:text-indigo-300 transition-colors">
-                        {member.user.name}
-                      </p>
-                      <p className="text-slate-500 text-xs mt-1">
-                        {member.role === 'Organizer' ? 'Організатор' : member.role === 'Jury' ? 'Журі' : 'Ментор'}
-                      </p>
-                    </div>
-                ))}
+                  // Перевіряємо роль та статус (Accepted або Організатор без статусу)
+                  .filter(member => {
+                    const matchesRole = teamTab === 'Organizer' 
+                      ? (member.role === 'Organizer' || member.role === 'Co-organizer') 
+                      : member.role === teamTab;
+                    
+                    const hasValidStatus = member.status?.toLowerCase() === 'accepted' || (!member.status && (member.role === 'Organizer' || member.role === 'Co-organizer'));
+                    return matchesRole && hasValidStatus;
+                  })
+                  // Головний організатор завжди йде першим
+                  .sort((a, b) => {
+                    if (a.role === 'Organizer' && b.role === 'Co-organizer') return -1;
+                    if (a.role === 'Co-organizer' && b.role === 'Organizer') return 1;
+                    return 0;
+                  })
+                  // Відображення карток
+                  .map(member => {
+                    const userName = member.user?.name || 'Невідомий користувач';
+                    const defaultAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(userName)}&background=334155&color=cbd5e1`;
+                    const avatarSrc = member.user?.avatarUrl || member.user?.avatar || defaultAvatar;
+                    return (
+                      <div
+                        key={member._id}
+                        // Переходимо в профіль тільки якщо є ID юзера
+                        onClick={() => member.user?._id && navigate(`/profile/${member.user._id}`)}
+                        className="group flex flex-col items-center p-4 bg-slate-900/50 rounded-xl hover:bg-slate-700/50 transition-all cursor-pointer border border-transparent hover:border-slate-600 hover:-translate-y-1 shadow-lg shadow-transparent hover:shadow-black/20"
+                      >
+                        <img 
+                          src={avatarSrc} 
+                          alt={userName} 
+                          className="w-16 h-16 sm:w-20 sm:h-20 rounded-full mb-3 object-cover border-2 border-indigo-500/30 group-hover:border-indigo-400 transition-colors" 
+                          // Якщо посилання на аватарку зламане (наприклад, видалили фото), ставимо заглушку
+                          onError={(e) => { 
+                            e.target.onerror = null; 
+                            e.target.src = defaultAvatar; 
+                          }}
+                        />
+                        <p className="text-white font-medium text-center text-sm group-hover:text-indigo-300 transition-colors">
+                          {userName}
+                        </p>
+                        <p className="text-slate-500 text-xs mt-1">
+                          {member.role === 'Organizer' ? 'Організатор' : member.role === 'Co-organizer' ? 'Співорганізатор' : member.role === 'Jury' ? 'Журі' : 'Ментор'}
+                        </p>
+                      </div>
+                    );
+                  })}
 
-                {(hackathon.members || []).filter(member => member.role === teamTab).length === 0 && (
+                {/* Оновлюємо умову для показу надпису "У цій категорії ще немає користувачів" з тими ж фільтрами */}
+                {(hackathon.members || []).filter(member => 
+                  member.role === teamTab && 
+                  (member.status?.toLowerCase() === 'accepted' || (!member.status && member.role === 'Organizer'))
+                ).length === 0 && (
                   <div className="col-span-full text-center py-8">
-                    <p className="text-slate-500 text-sm">У цій категорії ще немає користувачів.</p>
+                    <p className="text-slate-500 text-sm">У цій категорії ще немає підтверджених користувачів.</p>
                   </div>
                 )}
               </div>
@@ -374,7 +411,51 @@ const HackathonDetails = () => {
               </div>
 
               {/* Кнопки дій */}
-              {isOrganizer ? (
+              <div className="flex flex-col gap-3">
+                {/* Панель управління: бачать Головний організатор та Співорганізатори */}
+                {(isMainOrganizer || isCoOrganizer) && (
+                  <button 
+                    onClick={() => navigate(`/hackathons/${hackathon._id}/manage`)}
+                    className="w-full py-4 flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl transition-all border border-slate-600 shadow-lg"
+                  >
+                    <LayoutDashboard size={20} /> Панель управління
+                  </button>
+                )}
+
+                {/* Покинути хакатон: бачать всі причетні до хакатону, окрім Головного організатора */}
+                {(isCoOrganizer || isParticipant || isJuryOrMentor) && (
+                  <button 
+                    onClick={() => setIsLeaveModalOpen(true)}
+                    disabled={isActionLoading}
+                    className="w-full py-4 flex items-center justify-center gap-2 bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 font-bold rounded-xl transition-all border border-rose-500/20 disabled:opacity-50"
+                  >
+                    {isActionLoading ? <Loader2 className="animate-spin" size={20} /> : <LogOut size={20} />} 
+                    Покинути хакатон
+                  </button>
+                )}
+
+                {/* Взяти участь / Реєстрацію закрито: бачать тільки "сторонні" користувачі */}
+                {!isAnyMember && (
+                  isRegistrationOpen ? (
+                    <button 
+                      onClick={handleJoin}
+                      disabled={isActionLoading}
+                      className="w-full py-4 flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl transition-all shadow-lg shadow-indigo-600/25 disabled:opacity-50"
+                    >
+                      {isActionLoading ? <Loader2 className="animate-spin" size={20} /> : <ExternalLink size={20} />} 
+                      Взяти участь
+                    </button>
+                  ) : (
+                    <button 
+                      disabled 
+                      className="w-full py-4 flex items-center justify-center gap-2 bg-slate-800/50 text-slate-500 font-bold rounded-xl cursor-not-allowed border border-slate-700/50"
+                    >
+                      Реєстрацію закрито
+                    </button>
+                  )
+                )}
+              </div>
+              {/* {isMainOrganizer || isCoOrganizer ? (
                 <button 
                   onClick={() => navigate(`/hackathons/${hackathon._id}/manage`)}
                   className="w-full py-4 flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl transition-all border border-slate-600 shadow-lg"
@@ -406,7 +487,7 @@ const HackathonDetails = () => {
                 >
                   Реєстрацію закрито
                 </button>
-              )}
+              )} */}
             </div>
           </div>
         </div>
@@ -450,7 +531,7 @@ const HackathonDetails = () => {
                   className="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-800 cursor-pointer transition-colors group"
                 >
                   <img 
-                    src={participant.user.avatarUrl} 
+                    src={participant.user.avatar} 
                     alt={participant.user.name}
                     className="w-12 h-12 rounded-full object-cover border border-slate-700 group-hover:border-blue-500/50 transition-colors"
                   />
@@ -480,45 +561,55 @@ const HackathonDetails = () => {
       )}
 
       {/* Модальне вікно: Підтвердження виходу */}
-      {isLeaveModalOpen && (
-        <div 
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 transition-opacity"
-          onClick={() => !isActionLoading && setIsLeaveModalOpen(false)}
-        >
+      {isLeaveModalOpen && (() => {
+        let modalTitle = 'Покинути хакатон?';
+        let modalText = 'Ви впевнені, що хочете скасувати свою участь? Ви зможете приєднатися знову, доки реєстрація відкрита.';
+
+        if (isCoOrganizer) {
+          modalTitle = 'Скласти повноваження?';
+          modalText = 'Ви впевнені, що хочете перестати бути співорганізатором? Для повернення Головному організатору доведеться надсилати вам нове запрошення.';
+        } else if (isJuryOrMentor) {
+          modalTitle = 'Покинути команду хакатону?';
+          modalText = 'Ви впевнені, що хочете відмовитися від своєї ролі? Щоб повернутися, знадобиться нове запрошення від організатора.';
+        }
+
+        return (
           <div 
-            className="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-sm p-6 overflow-hidden shadow-2xl shadow-rose-900/20 text-center transform transition-all"
-            onClick={(e) => e.stopPropagation()}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 transition-opacity"
+            onClick={() => !isActionLoading && setIsLeaveModalOpen(false)}
           >
-            <div className="w-16 h-16 bg-rose-500/10 text-rose-500 rounded-full flex items-center justify-center mx-auto mb-4">
-              <AlertTriangle size={32} />
-            </div>
-            <h3 className="text-xl font-bold text-white mb-2">
-              Покинути хакатон?
-            </h3>
-            <p className="text-slate-400 text-sm mb-6">
-              Ви впевнені, що хочете скасувати свою участь? Ви зможете приєднатися знову, доки реєстрація відкрита.
-            </p>
-            
-            <div className="flex gap-3">
-              <button 
-                onClick={() => setIsLeaveModalOpen(false)}
-                disabled={isActionLoading}
-                className="flex-1 py-3 bg-slate-800 hover:bg-slate-700 text-white font-medium rounded-xl transition-colors disabled:opacity-50"
-              >
-                Скасувати
-              </button>
-              <button 
-                onClick={handleLeave}
-                disabled={isActionLoading}
-                className="flex-1 py-3 bg-rose-600 hover:bg-rose-500 text-white font-medium rounded-xl transition-colors flex justify-center items-center gap-2 disabled:opacity-50"
-              >
-                {isActionLoading ? <Loader2 className="animate-spin" size={18} /> : null}
-                Так, покинути
-              </button>
+            <div 
+              className="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-sm p-6 overflow-hidden shadow-2xl shadow-rose-900/20 text-center transform transition-all"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="w-16 h-16 bg-rose-500/10 text-rose-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <AlertTriangle size={32} />
+              </div>
+              
+              <h3 className="text-xl font-bold text-white mb-2"> {modalTitle} </h3>
+              <p className="text-slate-400 text-sm mb-6"> {modalText} </p>
+              
+              <div className="flex gap-3">
+                <button 
+                  onClick={() => setIsLeaveModalOpen(false)}
+                  disabled={isActionLoading}
+                  className="flex-1 py-3 bg-slate-800 hover:bg-slate-700 text-white font-medium rounded-xl transition-colors disabled:opacity-50"
+                >
+                  Скасувати
+                </button>
+                <button 
+                  onClick={handleLeave}
+                  disabled={isActionLoading}
+                  className="flex-1 py-3 bg-rose-600 hover:bg-rose-500 text-white font-medium rounded-xl transition-colors flex justify-center items-center gap-2 disabled:opacity-50"
+                >
+                  {isActionLoading ? <Loader2 className="animate-spin" size={18} /> : null}
+                  Так, покинути
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        );
+      })()}
 
     </div>
   );

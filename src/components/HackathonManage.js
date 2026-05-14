@@ -35,12 +35,16 @@ const HackathonManage = () => {
     );
   }
 
-  // Масив для пунктів меню (щоб легко додавати нові)
   const menuItems = [
     { 
       path: '.', // Точка означає базовий шлях /hackathons/:id/manage
       icon: <Settings size={20} />, 
-      label: 'Налаштування' 
+      label: 'Огляд' 
+    },
+    { 
+      path: 'settings',
+      icon: <Settings size={20} />, 
+      label: 'Налаштування хакатону' 
     },
     { 
       path: 'team', 
@@ -51,6 +55,16 @@ const HackathonManage = () => {
       path: 'participants', 
       icon: <Users size={20} />, 
       label: 'Учасники' 
+    },
+    { 
+      path: 'submissions',
+      icon: <Settings size={20} />, 
+      label: 'Управління проєктами' 
+    },
+    { 
+      path: 'mailling',
+      icon: <Settings size={20} />, 
+      label: 'Комунікація' 
     }
   ];
 
@@ -74,7 +88,6 @@ const HackathonManage = () => {
         </div>
       </div>
 
-      {/* Основна частина з Sidebar та Контентом */}
       <div className="flex-1 max-w-7xl w-full mx-auto flex flex-col md:flex-row gap-6 p-4 py-8">
         
         {/* Бокове меню (Sidebar) */}

@@ -131,7 +131,7 @@ const Register = () => {
           <div style={{ width: '100%' }}>
             <label className="block text-base font-semibold text-slate-300 mb-2.5">Ім'я та Прізвище</label>
             <div className="relative" style={{ width: '100%' }}>
-              <div className="absolute pointer-events-none" style={{ top: '40%', transform: 'translateY(-50%)', left: '16px' }}>
+              <div className="absolute pointer-events-none" style={{ top: '50%', transform: 'translateY(-50%)', left: '16px' }}>
                 <User size={20} className="text-slate-500" />
               </div>
               <input
@@ -150,7 +150,7 @@ const Register = () => {
           <div style={{ width: '100%' }}>
             <label className="block text-base font-semibold text-slate-300 mb-2.5">Пошта</label>
             <div className="relative" style={{ width: '100%' }}>
-              <div className="absolute pointer-events-none" style={{ top: '40%', transform: 'translateY(-50%)', left: '16px' }}>
+              <div className="absolute pointer-events-none" style={{ top: '50%', transform: 'translateY(-50%)', left: '16px' }}>
                 <Mail size={20} className="text-slate-500" />
               </div>
               <input
@@ -169,7 +169,7 @@ const Register = () => {
           <div style={{ width: '100%' }}>
             <label className="block text-base font-semibold text-slate-300 mb-2.5">Пароль</label>
             <div className="relative" style={{ width: '100%' }}>
-              <div className="absolute pointer-events-none" style={{ top: '40%', transform: 'translateY(-50%)', left: '16px' }} >
+              <div className="absolute pointer-events-none" style={{ top: '50%', transform: 'translateY(-50%)', left: '16px' }} >
                 <Lock size={20} className="text-slate-500" />
               </div>
               <input
@@ -188,7 +188,7 @@ const Register = () => {
           <div style={{ width: '100%' }}>
             <label className="block text-base font-semibold text-slate-300 mb-2.5">Підтвердіть пароль</label>
             <div className="relative" style={{ width: '100%' }}>
-              <div className="absolute pointer-events-none" style={{ top: '40%', transform: 'translateY(-50%)', left: '16px' }}>
+              <div className="absolute pointer-events-none" style={{ top: '50%', transform: 'translateY(-50%)', left: '16px' }}>
                 <Lock size={20} className="text-slate-500" />
               </div>
               <input

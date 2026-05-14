@@ -239,7 +239,7 @@ const ProfileSettings = ({ user, setUser }) => {
         <div>
           <label className="block text-sm font-semibold text-slate-300 mb-2">Повне ім'я</label>
           <div className="relative" style={{ width: '100%' }}>
-            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none" style={{ top: '40%', transform: 'translateY(-50%)'}}>
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none" style={{ top: '50%', transform: 'translateY(-50%)'}}>
               <User size={18} className="text-slate-500" />
             </div>
             <input
@@ -259,7 +259,7 @@ const ProfileSettings = ({ user, setUser }) => {
         <div>
           <label className="block text-sm font-semibold text-slate-300 mb-2">Спеціалізація</label>
           <div className="relative" style={{ width: '100%' }}>
-            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none" style={{ top: '40%', transform: 'translateY(-50%)'}}>
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none" style={{ top: '50%', transform: 'translateY(-50%)'}}>
               <Briefcase size={18} className="text-slate-500" />
             </div>
             <input
@@ -303,7 +303,7 @@ const ProfileSettings = ({ user, setUser }) => {
         <div>
           <label className="block text-sm font-semibold text-slate-300 mb-2">Навички (через кому)</label>
           <div className="relative" style={{ width: '100%' }}>
-            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none" style={{ top: '40%', transform: 'translateY(-50%)'}}>
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none" style={{ top: '50%', transform: 'translateY(-50%)'}}>
               <Wrench size={18} className="text-slate-500" />
             </div>
             <input
@@ -322,7 +322,7 @@ const ProfileSettings = ({ user, setUser }) => {
         <div>
           <label className="block text-sm font-semibold text-slate-300 mb-2">Посилання на GitHub / Портфоліо</label>
           <div className="relative" style={{ width: '100%' }}>
-            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none" style={{ top: '35%', transform: 'translateY(-50%)'}}>
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none" style={{ top: '50%', transform: 'translateY(-50%)'}}>
               <Globe size={18} className="text-slate-500" />
             </div>
             <input
@@ -380,7 +380,7 @@ const ProfileSettings = ({ user, setUser }) => {
             <div>
               <label className="block text-sm font-medium text-slate-300 mb-2">Поточний пароль</label>
               <div className="relative" style={{ width: '100%' }}>
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none" style={{ top: '35%', transform: 'translateY(-50%)'}}>
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none" style={{ top: '50%', transform: 'translateY(-50%)'}}>
                   <Key size={18} className="text-slate-500" />
                 </div>
                 <input

@@ -140,6 +140,7 @@ const Dashboard = () => {
                   <p className="text-slate-400">Ось що відбувається у ваших проєктах сьогодні.</p>
                 </div>
                 
+                {/* Плашка профілю (користувача) */}
                 <div onClick={() => navigate(`/profile/${user._id || user.id}`)} className="flex items-center gap-4 bg-slate-900/50 backdrop-blur-md p-3 pr-6 rounded-2xl border border-slate-700/50 cursor-pointer hover:border-indigo-500/50 transition-colors">
                   <div className="w-12 h-12 bg-gradient-to-tr from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center text-white text-xl font-bold shadow-lg">
                     {user.name.charAt(0).toUpperCase()}
@@ -147,7 +148,7 @@ const Dashboard = () => {
                   <div className="text-left">
                     <p className="text-sm font-bold text-white leading-tight">{user.name}</p>
                     <p className="text-[10px] text-indigo-400 uppercase tracking-[0.2em] font-black mt-1">
-                      {dashboardData.roles && dashboardData.roles.length > 0 ? dashboardData.roles[0].role : 'Participant'}
+                      Користувач
                     </p>
                   </div>
                 </div>
@@ -252,11 +253,13 @@ const Dashboard = () => {
                         <div className="flex justify-between items-start mb-4">
                           <span className={`px-3 py-1 text-xs font-bold rounded-full border ${
                             hack.userRole === 'Organizer' ? 'bg-amber-500/10 text-amber-400 border-amber-500/20' :
+                            hack.userRole === 'Co-organizer' ? 'bg-amber-500/10 text-amber-400 border-amber-500/20' :
                             hack.userRole === 'Judge' ? 'bg-purple-500/10 text-purple-400 border-purple-500/20' :
                             hack.userRole === 'Mentor' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' :
                             'bg-blue-500/10 text-blue-400 border-blue-500/20' 
                           }`}>
                             {hack.userRole === 'Organizer' ? 'Організатор' :
+                             hack.userRole === 'Co-organizer' ? 'Співорганізатор' :
                              hack.userRole === 'Judge' ? 'Журі' :
                              hack.userRole === 'Mentor' ? 'Ментор' : 'Учасник'}
                           </span>

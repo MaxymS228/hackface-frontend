@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Terminal, Mail, Lock, ArrowRight, Loader2, AlertCircle } from 'lucide-react';
 import { useGoogleLogin } from '@react-oauth/google';
 
 const Login = ({ setUser }) => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const apiUrl = process.env.REACT_APP_API_URL;
-  //const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -29,7 +29,14 @@ const Login = ({ setUser }) => {
         localStorage.setItem('user', JSON.stringify(data.user));
         localStorage.setItem('token', data.token);
         setUser(data.user);
-        window.location.href = '/dashboard';
+
+        const pendingInviteId = localStorage.getItem('pendingInviteId');
+          if (pendingInviteId) {
+          localStorage.removeItem('pendingInviteId'); // Очищаємо, щоб не зациклити
+          navigate(`/join-hackathon/${pendingInviteId}`); // Кидаємо на прийняття запрошення
+        } else {
+          navigate('/dashboard'); // Стандартний перехід, якщо запрошень не було
+        }
       } else {
         setError(data.message || 'Невірний email або пароль');
       }
@@ -57,7 +64,14 @@ const Login = ({ setUser }) => {
         // Зберігаємо юзера і перекидаємо на головну/дашборд
         localStorage.setItem('user', JSON.stringify(data.user));
         localStorage.setItem('token', data.token);
-        window.location.href = '/dashboard';
+
+        const pendingInviteId = localStorage.getItem('pendingInviteId');
+          if (pendingInviteId) {
+          localStorage.removeItem('pendingInviteId'); 
+          navigate(`/join-hackathon/${pendingInviteId}`); 
+        } else {
+          navigate('/dashboard');
+        }
       } else {
         setError(data.message || 'Помилка авторизації через Google');
       }
@@ -97,10 +111,7 @@ const Login = ({ setUser }) => {
           <div style={{ width: '100%' }}>
             <label className="block text-base font-semibold text-slate-300 mb-2.5">Пошта</label>
             <div className="relative" style={{ width: '100%' }}>
-              <div 
-                className="absolute pointer-events-none"
-                style={{ top: '40%', transform: 'translateY(-50%)', left: '16px' }}
-              >
+              <div className="absolute pointer-events-none" style={{ top: '50%', transform: 'translateY(-50%)', left: '16px' }} >
                 <Mail size={20} className="text-slate-500" />
               </div>
               <input
@@ -119,7 +130,7 @@ const Login = ({ setUser }) => {
           <div style={{ width: '100%' }}>
             <label className="block text-base font-semibold text-slate-300 mb-2.5">Пароль</label>
             <div className="relative" style={{ width: '100%' }}>
-              <div className="absolute pointer-events-none" style={{ top: '40%', transform: 'translateY(-50%)', left: '16px' }} >
+              <div className="absolute pointer-events-none" style={{ top: '50%', transform: 'translateY(-50%)', left: '16px' }} >
                 <Lock size={20} className="text-slate-500" />
               </div>
               <input

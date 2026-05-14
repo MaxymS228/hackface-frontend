@@ -164,7 +164,7 @@ const CreateHackathon = () => {
           <div className="md:col-span-2">
             <label className="block text-sm font-semibold text-slate-300 mb-2">Назва хакатону</label>
             <div className="relative" style={{ width: '100%' }}>
-              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none" style={{ top: '35%', transform: 'translateY(-50%)'}}>
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none" style={{ top: '50%', transform: 'translateY(-50%)'}}>
                 <Type size={18} className="text-slate-500" />
               </div>
               <input
@@ -194,7 +194,7 @@ const CreateHackathon = () => {
           <div>
             <label className="block text-sm font-semibold text-slate-300 mb-2">Початок хакатону</label>
             <div className="relative" style={{ width: '100%' }}>
-              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none" style={{ top: '35%', transform: 'translateY(-50%)'}}>
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none" style={{ top: '50%', transform: 'translateY(-50%)'}}>
                 <Calendar size={18} className="text-slate-500" />
               </div>
               <input
@@ -208,7 +208,7 @@ const CreateHackathon = () => {
           <div>
             <label className="block text-sm font-semibold text-slate-300 mb-2">Кінець хакатону</label>
             <div className="relative" style={{ width: '100%' }}>
-              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none" style={{ top: '35%', transform: 'translateY(-50%)'}}>
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none" style={{ top: '50%', transform: 'translateY(-50%)'}}>
                 <Calendar size={18} className="text-slate-500" />
               </div>
               <input
@@ -222,7 +222,7 @@ const CreateHackathon = () => {
           <div>
             <label className="block text-sm font-semibold text-slate-300 mb-2">Дедлайн реєстрації</label>
             <div className="relative" style={{ width: '100%' }}>
-              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none" style={{ top: '35%', transform: 'translateY(-50%)'}}>
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none" style={{ top: '50%', transform: 'translateY(-50%)'}}>
                 <Calendar size={18} className="text-slate-500" />
               </div>
               <input
@@ -250,7 +250,7 @@ const CreateHackathon = () => {
             <div className="md:col-span-2">
               <label className="block text-sm font-semibold text-slate-300 mb-2">Локація / Місто</label>
               <div className="relative" style={{ width: '100%' }}>
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none" style={{ top: '35%', transform: 'translateY(-50%)'}}>
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none" style={{ top: '50%', transform: 'translateY(-50%)'}}>
                   <MapPin size={18} className="text-slate-500" />
                 </div>
                 <input
@@ -267,7 +267,7 @@ const CreateHackathon = () => {
           <div>
             <label className="block text-sm font-semibold text-slate-300 mb-2">Тематика (через кому)</label>
             <div className="relative" style={{ width: '100%' }}>
-              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none" style={{ top: '35%', transform: 'translateY(-50%)'}}>
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none" style={{ top: '50%', transform: 'translateY(-50%)'}}>
                 <Tag size={18} className="text-slate-500" />
               </div>
               <input
@@ -282,7 +282,7 @@ const CreateHackathon = () => {
           <div>
             <label className="block text-sm font-semibold text-slate-300 mb-2">Призовий фонд / Нагороди</label>
             <div className="relative" style={{ width: '100%' }}>
-              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none" style={{ top: '35%', transform: 'translateY(-50%)'}}>
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none" style={{ top: '50%', transform: 'translateY(-50%)'}}>
                 <Trophy size={18} className="text-slate-500" />
               </div>
               <input

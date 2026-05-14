@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { Users, AlertTriangle, Search, Mail, Trash2, Loader2, UserMinus, AlertCircle } from 'lucide-react';
+import { useParams, Link } from 'react-router-dom';
+import { Users, AlertTriangle, Search, Mail, Trash2, Loader2, UserMinus, AlertCircle, Download } from 'lucide-react';
 
 const ManageParticipants = () => {
   const { id } = useParams();
@@ -10,7 +10,6 @@ const ManageParticipants = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [error, setError] = useState('');
-  //const [isRemoving, setIsRemoving] = useState(null);
   const [removeModal, setRemoveModal] = useState({ 
     isOpen: false, 
     userId: null, 
@@ -45,12 +44,40 @@ const ManageParticipants = () => {
   }, [id, apiUrl]);
 
   // Відкриття модалки
-  const openRemoveModal = (userId, userName) => {
+  const openRemoveModal = (memberId, userName) => {
     setRemoveModal({
       isOpen: true,
-      userId,
+      userId: memberId,
       userName
     });
+  };
+
+  // Функція для експорту в CSV
+  const exportToCSV = () => {
+    if (participants.length === 0) return;
+
+    // Заголовки стовпців
+    const headers = ["Ім'я", "Email", "Дата приєднання"];
+    
+    // Формуємо рядки
+    const rows = participants.map(member => [
+      `"${member.user.name}"`,
+      `"${member.user.email}"`,
+      `"${member.joinedAt ? new Date(member.joinedAt).toLocaleDateString('uk-UA') : '—'}"`
+    ]);
+
+    // Об'єднуємо все в один рядок з BOM (для коректного відображення кирилиці в Excel)
+    const csvContent = "\uFEFF" + [headers, ...rows].map(e => e.join(",")).join("\n");
+    
+    // Створюємо посилання для скачування
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", `participants_hackathon_${id}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   // Логіка підтвердження видалення учасника
@@ -63,7 +90,7 @@ const ManageParticipants = () => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${apiUrl}/api/hackathons/${id}/members/${userId}`, {
+      const response = await fetch(`${apiUrl}/api/hackathons/${id}/participants/${userId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -76,7 +103,7 @@ const ManageParticipants = () => {
       }
 
       // Оновлюємо список локально
-      setParticipants(prev => prev.filter(member => member.user._id !== userId));
+      setParticipants(prev => prev.filter(member => member._id !== userId));
       setRemoveModal({ isOpen: false, userId: null, userName: '' });
 
     } catch (err) {
@@ -120,7 +147,7 @@ const ManageParticipants = () => {
         {/* Пошук */}
         <div className="relative w-full sm:w-72">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Search size={18} className="text-slate-500" style={{ top: '40%', transform: 'translateY(-50%)'}} />
+            <Search size={18} className="text-slate-500" style={{ top: '40%', transform: 'translateY(-140%)'}} />
           </div>
           <input
             type="text"
@@ -130,6 +157,16 @@ const ManageParticipants = () => {
             className="w-full pl-10 pr-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors"
             style={{ width: '100%', paddingLeft: '48px', boxSizing: 'border-box' }}
           />
+
+          {/* Кнопка Експорту */}
+          <button
+            onClick={exportToCSV}
+            disabled={participants.length === 0}
+            className="flex items-center justify-center gap-2 px-4 py-2 bg-emerald-600/10 hover:bg-emerald-600 text-emerald-400 hover:text-white border border-emerald-600/30 rounded-xl transition-all text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <Download size={18} />
+            Експорт CSV
+          </button>
         </div>
       </div>
 
@@ -157,12 +194,12 @@ const ManageParticipants = () => {
                 {filteredParticipants.map((member) => (
                   <tr key={member.user._id} className="hover:bg-slate-800/30 transition-colors">
                     <td className="px-6 py-4">
-                      <div className="flex items-center gap-3">
-                        <img src={member.user.avatarUrl} alt={member.user.name} className="w-8 h-8 rounded-full object-cover border border-slate-700" />
-                        <span className="font-medium text-slate-200">
-                          {member.user.name || 'Невідомий користувач'}
+                      <Link to={`/profile/${member.user._id}`} className="flex items-center gap-3 hover:opacity-80 transition-opacity inline-flex">
+                        <img src={member.user.avatar} alt="" className="w-9 h-9 rounded-full object-cover border border-slate-700"/>
+                        <span className="font-semibold text-slate-200 group-hover:text-indigo-400 transition-colors">
+                          {member.user.name}
                         </span>
-                      </div>
+                      </Link>
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
@@ -175,7 +212,7 @@ const ManageParticipants = () => {
                     </td>
                     <td className="px-6 py-4 text-right">
                       <button
-                        onClick={() => openRemoveModal(member.user._id, member.user.name)}
+                        onClick={() => openRemoveModal(member._id, member.user.name)}
                         className="p-2 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors disabled:opacity-50 inline-flex items-center gap-1"
                         title="Видалити учасника"
                       >

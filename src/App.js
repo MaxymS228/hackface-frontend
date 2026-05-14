@@ -18,11 +18,16 @@ import PublicProfile from './pages/PublicProfile';
 import ProfileSettings from './pages/ProfileSettings';
 import CreateHackathon from './pages/CreateHackathon';
 import HackathonDetails from './components/HackathonDetails';
+import JoinHackathon from './components/JoinHackathon'
 
 import HackathonManage from './components/HackathonManage';
 import ManageSettings from './components/ManageSettings';
 import ManageTeam from './components/ManageTeam';
 import ManageParticipants from './components/ManageParticipants';
+import ManageReview from './components/ManageReview';
+import ManageSubmissions from './components/ManageSubmissions';
+import ManageMailling from './components/ManageMailling';
+
 
 
 
@@ -61,6 +66,7 @@ function App() {
             <Route path="/login" element={<Login setUser={setUser} />} />
             <Route path="/register" element={<Register />} />
             <Route path="/verify/:token" element={<VerifyEmail />} />
+            <Route path="/join-hackathon/:id/" element={<JoinHackathon />} />
             
             <Route path="/dashboard" element={
               <ProtectedRoute>
@@ -107,13 +113,16 @@ function App() {
               <ProtectedRoute>
                 <HackathonDetails />
               </ProtectedRoute>
-             } />
+            } />
 
-            <Route path="/hackathons/:id/manage" element={<HackathonManage />}>
-              <Route index element={<ManageSettings />} /> {/* /manage */}
+            <Route path="/hackathons/:id/manage" element={< HackathonManage />}>
+              <Route index element={< ManageReview />} /> {/* /manage */}
               
-              <Route path="team" element={<ManageTeam />} /> {/* /manage/team */}
-              <Route path="participants" element={<ManageParticipants />} /> {/* /manage/participants */}
+              <Route path="settings" element={< ManageSettings/>} /> {/* /manage/settings */}
+              <Route path="team" element={< ManageTeam />} /> {/* /manage/team */}
+              <Route path="participants" element={< ManageParticipants />} /> {/* /manage/participants */}
+              <Route path="submissions" element={< ManageSubmissions />} /> {/* /manage/submissions */}
+              <Route path="mailling" element={< ManageMailling />} /> {/* /manage/mailling */}
             </Route>
 
           </Routes>
