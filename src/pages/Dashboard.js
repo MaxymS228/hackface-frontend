@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { 
   Layout, Users, Code, Award, Settings, LogOut, Terminal,
-  Menu, X, Loader2, ExternalLink, Search, Trophy, Plus, Calendar, ChevronRight
+  Menu, X, Loader2, ExternalLink, Search, Trophy, Plus, Calendar, ChevronRight, List
 } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
@@ -236,19 +236,26 @@ const Dashboard = () => {
                   <h3 className="text-2xl font-bold text-white flex items-center gap-3">
                     <Trophy className="text-indigo-400" size={28} /> Мої хакатони
                   </h3>
-                  
-                  <button 
-                    onClick={() => navigate('/create-hackathon')}
-                    className="flex items-center gap-2 px-6 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl transition-all shadow-lg shadow-indigo-600/20"
-                  >
-                    <Plus size={18} /> Створити хакатон
-                  </button>
+                  <div className="flex items-center gap-3">
+                    <button
+                      onClick={() => navigate('/my-hackathons')}
+                      className="flex items-center gap-2 px-6 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white font-semibold rounded-xl transition-all border border-slate-700"
+                    >
+                      <List size={18} /> Всі мої хакатони
+                    </button>
+                    <button 
+                      onClick={() => navigate('/create-hackathon')}
+                      className="flex items-center gap-2 px-6 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl transition-all shadow-lg shadow-indigo-600/20"
+                    >
+                      <Plus size={18} /> Створити хакатон
+                    </button>
+                  </div>
                 </div>
 
                 {dashboardData.hackathons && dashboardData.hackathons.length > 0 ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {dashboardData.hackathons.map((hack) => (
-                      <div key={hack._id} onClick={() => navigate(`/hackathons/${hack._id}`)} className="group bg-slate-800/40 border border-slate-700/50 hover:border-indigo-500/50 rounded-2xl p-6 cursor-pointer transition-all hover:-translate-y-1">
+                      <div key={hack._id} onClick={() => navigate(`/hackathons/${hack._id}`)} className="group bg-gradient-to-br from-slate-800/60 via-slate-800/40 to-indigo-950/40 border border-slate-700/50 hover:border-indigo-500/50 rounded-2xl p-6 cursor-pointer transition-all hover:-translate-y-1 flex flex-col justify-between min-h-[180px]">
                         
                         <div className="flex justify-between items-start mb-4">
                           <span className={`px-3 py-1 text-xs font-bold rounded-full border ${
@@ -269,7 +276,10 @@ const Dashboard = () => {
                           </span>
                         </div>
 
-                        <h4 className="text-xl font-bold text-white mb-2 group-hover:text-indigo-400 transition-colors line-clamp-1">
+                        <h4
+                          title={hack.title}
+                          className="text-lg font-bold text-white mb-2 group-hover:text-indigo-400 transition-colors line-clamp-2 leading-snug"
+                        >
                           {hack.title}
                         </h4>
                         

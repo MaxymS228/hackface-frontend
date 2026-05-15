@@ -170,9 +170,15 @@ const CreateHackathon = () => {
               <input
                 type="text" name="title" value={formData.title} onChange={handleChange} required
                 placeholder="Awesome Hackathon 2026"
+                maxLength={60}
                 className="w-full pr-4 pl-11 py-3.5 bg-slate-900 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:ring-1 focus:ring-indigo-500 transition-all"
                 style={{ width: '100%', paddingLeft: '48px', boxSizing: 'border-box' }}
               />
+              <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+                <span className={`text-xs font-medium ${formData.title.length >= 55 ? 'text-rose-400' : 'text-slate-500'}`}>
+                  {formData.title.length}/60
+                </span>
+              </div>
             </div>
           </div>
 

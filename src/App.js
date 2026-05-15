@@ -4,21 +4,23 @@ import './App.css';
 
 import ProtectedRoute from './components/ProtectedRoute';
 import Navbar from './components/Navbar';
-import Home from './pages/Home';
+import Home from './pages/Home'; //11111
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
-import Team from './pages/Team';
-import Submit from './pages/Submit';
-import Evaluation from './pages/Evaluation';
-import Results from './pages/Results';
-import Admin from './pages/Admin';
+import Team from './pages/Team'; //11111111111
+import Submit from './pages/Submit'; //1111111111
+import Evaluation from './pages/Evaluation'; //11111111111
+import Results from './pages/Results'; //111111111111
+import Admin from './pages/Admin'; //0000000000000
 import VerifyEmail from './components/VerifyEmail';
 import PublicProfile from './pages/PublicProfile';
 import ProfileSettings from './pages/ProfileSettings';
 import CreateHackathon from './pages/CreateHackathon';
 import HackathonDetails from './components/HackathonDetails';
 import JoinHackathon from './components/JoinHackathon'
+import MyHackathons from './components/MyHackathons';
+import OrganizerProtectedRoute from './components/OrganizerProtectedRoute';
 
 import HackathonManage from './components/HackathonManage';
 import ManageSettings from './components/ManageSettings';
@@ -114,8 +116,13 @@ function App() {
                 <HackathonDetails />
               </ProtectedRoute>
             } />
+            <Route path="/my-hackathons" element={
+              <ProtectedRoute>
+                <MyHackathons />
+              </ProtectedRoute>
+            } />
 
-            <Route path="/hackathons/:id/manage" element={< HackathonManage />}>
+            <Route path="/hackathons/:id/manage" element={ <OrganizerProtectedRoute>< HackathonManage /></OrganizerProtectedRoute>}>
               <Route index element={< ManageReview />} /> {/* /manage */}
               
               <Route path="settings" element={< ManageSettings/>} /> {/* /manage/settings */}

@@ -106,7 +106,7 @@ const Navbar = ({ user, setUser }) => {
                       </Link>
                       
                       <Link 
-                        to="/dashboard" 
+                        to="/my-hackathons" 
                         onClick={() => setIsDropdownOpen(false)}
                         className="flex items-center gap-2 px-4 py-2.5 text-sm text-slate-300 hover:bg-slate-700 hover:text-indigo-400 transition-colors"
                       >
