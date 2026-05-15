@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Calendar, MapPin, Trophy, Users, Clock, Tag, ChevronLeft, ExternalLink, Loader2, PlayCircle, LogOut, AlertTriangle, LayoutDashboard } from 'lucide-react';
+import { Calendar, MapPin, Trophy, Users, Clock, Tag, ChevronLeft, ExternalLink, Loader2, PlayCircle, LogOut, AlertTriangle, LayoutDashboard, Check, Share2 } from 'lucide-react';
 
 const HackathonDetails = () => {
   const { id } = useParams();
@@ -10,6 +10,7 @@ const HackathonDetails = () => {
   const [error, setError] = useState(null);
   const [teamTab, setTeamTab] = useState('Organizer'); 
   const [isParticipantsModalOpen, setIsParticipantsModalOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
   
   const [isActionLoading, setIsActionLoading] = useState(false);
   const [isLeaveModalOpen, setIsLeaveModalOpen] = useState(false);
@@ -78,6 +79,27 @@ const HackathonDetails = () => {
     // Обов'язково очищаємо таймер, коли користувач йде зі сторінки
     return () => clearInterval(intervalId);
   }, [hackathon?.registrationDeadline]);
+
+  const handleShare = async () => {
+    const url = `${window.location.origin}/hackathons/${hackathon._id}`;
+    
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: hackathon.title,
+          text: `Приєднуйся до хакатону "${hackathon.title}"!`,
+          url,
+        });
+      } catch (err) {
+        // Користувач закрив меню — нічого не робимо
+      }
+    } else {
+      // Fallback для десктопу — копіюємо посилання
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
 
   const handleJoin = async () => {
     if (!user) {
@@ -168,16 +190,6 @@ const HackathonDetails = () => {
   const isJuryOrMentor = user && (hackathon.members || []).some(member => ['Jury', 'Mentor'].includes(member.role) && (member.user?._id === currentUserId || member.user === currentUserId));
   const isAnyMember = isMainOrganizer || isCoOrganizer || isParticipant || isJuryOrMentor;
 
-  //const isOrganizer = user && ((hackathon.organizerId === currentUserId) || (hackathon.members || []).some( member => member.role === 'Co-organizer' && (member.user?._id === currentUserId || member.user === currentUserId)));
-  
-  // Перевіряємо, чи є поточний користувач учасником
-  // const isParticipant = user && (hackathon.members || []).some(
-  //   member => member.role === 'Participant' && 
-  //   (member.user?._id === currentUserId || member.user === currentUserId)
-  // );
-
-  //const isRegistrationOpen = new Date() <= new Date(hackathon.registrationDeadline);
-
   const formatDateWithTime = (dateString) => {
     if (!dateString) return '';
     const date = new Date(dateString);
@@ -202,10 +214,27 @@ const HackathonDetails = () => {
     <div className="min-h-screen bg-[#020617] text-slate-200 pb-20">
       
       {/* Верхня панель */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <button onClick={() => navigate('/dashboard')} className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors w-fit">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex items-center justify-between">
+        
+        {/* Кнопка зліва */}
+        <button 
+          onClick={() => navigate('/dashboard')} 
+          className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors w-fit"
+        >
           <ChevronLeft size={20} /> На Дашборд
         </button>
+
+        {/* Кнопка справа */}
+        <button
+          onClick={handleShare}
+          className="flex items-center gap-2 px-4 py-2.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 hover:text-white rounded-xl transition-all text-sm font-medium"
+        >
+          {copied
+            ? <><Check size={16} className="text-emerald-400" /> Скопійовано</>
+            : <><Share2 size={16} /> Поділитися</>
+          }
+        </button>
+        
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

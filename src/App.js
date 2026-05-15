@@ -21,6 +21,7 @@ import HackathonDetails from './components/HackathonDetails';
 import JoinHackathon from './components/JoinHackathon'
 import MyHackathons from './components/MyHackathons';
 import OrganizerProtectedRoute from './components/OrganizerProtectedRoute';
+import AllHackathons from './pages/AllHackathons';
 
 import HackathonManage from './components/HackathonManage';
 import ManageSettings from './components/ManageSettings';
@@ -69,6 +70,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/verify/:token" element={<VerifyEmail />} />
             <Route path="/join-hackathon/:id/" element={<JoinHackathon />} />
+            <Route path="/hackathons" element={<AllHackathons />} />
             
             <Route path="/dashboard" element={
               <ProtectedRoute>
