@@ -137,7 +137,7 @@ const ManageTeam = () => {
         {error && <div className="mt-2 mb-4 text-rose-500 text-sm font-medium flex items-center gap-1"><AlertCircle size={20} /> {error}</div>}
         <form onSubmit={handleInvite} className="flex flex-col md:flex-row gap-4 mb-6">
           <div className="flex-1 relative" style={{ width: '100%' }}>
-            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" style={{ top: '60%', transform: 'translateY(-50%)'}} size={18} />
+            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" style={{ top: '70%', transform: 'translateY(-50%)'}} size={18} />
             <input
               type="email" required placeholder="Email користувача..."
               className="w-full bg-slate-800 border border-slate-700 rounded-xl pl-10 pr-4 py-3 text-white focus:border-indigo-500 outline-none"

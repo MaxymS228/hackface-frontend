@@ -12,7 +12,6 @@ import Team from './pages/Team'; //11111111111
 import Submit from './pages/Submit'; //1111111111
 import Evaluation from './pages/Evaluation'; //11111111111
 import Results from './pages/Results'; //111111111111
-import Admin from './pages/Admin'; //0000000000000
 import VerifyEmail from './components/VerifyEmail';
 import PublicProfile from './pages/PublicProfile';
 import ProfileSettings from './pages/ProfileSettings';
@@ -22,6 +21,7 @@ import JoinHackathon from './components/JoinHackathon'
 import MyHackathons from './components/MyHackathons';
 import OrganizerProtectedRoute from './components/OrganizerProtectedRoute';
 import AllHackathons from './pages/AllHackathons';
+import Footer from './components/Footer';
 
 import HackathonManage from './components/HackathonManage';
 import ManageSettings from './components/ManageSettings';
@@ -93,11 +93,6 @@ function App() {
               </ProtectedRoute>
             } />
             <Route path="/results" element={<Results />} />
-            <Route path="/admin" element={
-              <ProtectedRoute>
-                <Admin />
-              </ProtectedRoute>
-            } />
             <Route path="/profile/:id" element={
               <ProtectedRoute>
                 <PublicProfile currentUser={user} />
@@ -136,7 +131,7 @@ function App() {
 
           </Routes>
         </main>
-
+        <Footer />
       </div>
     </Router>
   );
