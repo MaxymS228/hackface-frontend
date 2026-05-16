@@ -474,6 +474,15 @@ const HackathonDetails = () => {
                   </button>
                 )}
 
+                {isParticipant && (
+                  <button
+                    onClick={() => navigate(`/hackathons/${hackathon._id}/teams`)}
+                    className="w-full py-4 flex items-center justify-center gap-2 bg-indigo-600/10 hover:bg-indigo-600/20 text-indigo-400 font-bold rounded-xl transition-all border border-indigo-500/20 hover:border-indigo-500/40"
+                  >
+                    <Users size={20} /> Команди хакатону
+                  </button>
+                )}
+
                 {/* Покинути хакатон: бачать всі причетні до хакатону, окрім Головного організатора */}
                 {(isCoOrganizer || isParticipant || isJuryOrMentor) && (
                   <button 
@@ -507,39 +516,6 @@ const HackathonDetails = () => {
                   )
                 )}
               </div>
-              {/* {isMainOrganizer || isCoOrganizer ? (
-                <button 
-                  onClick={() => navigate(`/hackathons/${hackathon._id}/manage`)}
-                  className="w-full py-4 flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl transition-all border border-slate-600 shadow-lg"
-                >
-                  <LayoutDashboard size={20} /> Панель управління
-                </button>
-              ) : isParticipant ? (
-                <button 
-                  onClick={() => setIsLeaveModalOpen(true)}
-                  disabled={isActionLoading}
-                  className="w-full py-4 flex items-center justify-center gap-2 bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 font-bold rounded-xl transition-all border border-rose-500/20 disabled:opacity-50"
-                >
-                  {isActionLoading ? <Loader2 className="animate-spin" size={20} /> : <LogOut size={20} />} 
-                  Покинути хакатон
-                </button>
-              ) : isRegistrationOpen ? (
-                <button 
-                  onClick={handleJoin}
-                  disabled={isActionLoading}
-                  className="w-full py-4 flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl transition-all shadow-lg shadow-indigo-600/25 disabled:opacity-50"
-                >
-                  {isActionLoading ? <Loader2 className="animate-spin" size={20} /> : <ExternalLink size={20} />} 
-                  Взяти участь
-                </button>
-              ) : (
-                <button 
-                  disabled 
-                  className="w-full py-4 flex items-center justify-center gap-2 bg-slate-800/50 text-slate-500 font-bold rounded-xl cursor-not-allowed border border-slate-700/50"
-                >
-                  Реєстрацію закрито
-                </button>
-              )} */}
             </div>
           </div>
         </div>

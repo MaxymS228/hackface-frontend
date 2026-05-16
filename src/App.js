@@ -3,26 +3,26 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import './App.css';
 
 import ProtectedRoute from './components/ProtectedRoute';
+import OrganizerProtectedRoute from './components/OrganizerProtectedRoute';
 import Navbar from './components/Navbar';
-import Home from './pages/Home'; //11111
-import Login from './pages/Login';
+import Footer from './components/Footer';
+import Home from './pages/Home';
 import Register from './pages/Register';
+import VerifyEmail from './components/VerifyEmail';
+import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
-import Team from './pages/Team'; //11111111111
+import PublicProfile from './pages/PublicProfile';
+import ProfileSettings from './pages/ProfileSettings';
+import AllHackathons from './pages/AllHackathons';
+import MyHackathons from './components/MyHackathons';
+import JoinHackathon from './components/JoinHackathon'
+import CreateHackathon from './pages/CreateHackathon';
+import HackathonDetails from './components/HackathonDetails';
 import Submit from './pages/Submit'; //1111111111
 import Evaluation from './pages/Evaluation'; //11111111111
 import Results from './pages/Results'; //111111111111
-import VerifyEmail from './components/VerifyEmail';
-import PublicProfile from './pages/PublicProfile';
-import ProfileSettings from './pages/ProfileSettings';
-import CreateHackathon from './pages/CreateHackathon';
-import HackathonDetails from './components/HackathonDetails';
-import JoinHackathon from './components/JoinHackathon'
-import MyHackathons from './components/MyHackathons';
-import OrganizerProtectedRoute from './components/OrganizerProtectedRoute';
-import AllHackathons from './pages/AllHackathons';
-import Footer from './components/Footer';
 
+// Панель управління
 import HackathonManage from './components/HackathonManage';
 import ManageSettings from './components/ManageSettings';
 import ManageTeam from './components/ManageTeam';
@@ -31,7 +31,11 @@ import ManageReview from './components/ManageReview';
 import ManageSubmissions from './components/ManageSubmissions';
 import ManageMailling from './components/ManageMailling';
 
-
+//Команди
+import TeamsPage from './pages/TeamsPage';
+import CreateTeamForm from './components/CreateTeamForm';
+import TeamMatchmaking from './pages/TeamMatchmaking';
+import TeamWorkspace from './pages/TeamWorkspace';
 
 
 const ConditionalNavbar = ({ user, setUser }) => {
@@ -77,11 +81,6 @@ function App() {
                 <Dashboard />
               </ProtectedRoute>
             } />
-            <Route path="/team" element={
-              <ProtectedRoute>
-                <Team />
-              </ProtectedRoute>
-            } />
             <Route path="/submit" element={
               <ProtectedRoute>
                 <Submit />
@@ -116,6 +115,26 @@ function App() {
             <Route path="/my-hackathons" element={
               <ProtectedRoute>
                 <MyHackathons />
+              </ProtectedRoute>
+            } />
+            <Route path="/hackathons/:id/teams" element={
+              <ProtectedRoute>
+                <TeamsPage />
+              </ProtectedRoute>
+            } />
+            <Route path="/hackathons/:id/teams/create" element={
+              <ProtectedRoute>
+                <CreateTeamForm />
+              </ProtectedRoute>
+            } />
+            <Route path="/hackathons/:id/teams/find" element={
+              <ProtectedRoute>
+                <TeamMatchmaking />
+              </ProtectedRoute>
+            } />
+            <Route path="/hackathons/:id/teams/:teamId" element={
+              <ProtectedRoute>
+                <TeamWorkspace />
               </ProtectedRoute>
             } />
 
