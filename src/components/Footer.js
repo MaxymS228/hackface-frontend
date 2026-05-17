@@ -63,6 +63,7 @@ const Footer = () => {
               {[
                 { label: 'Всі хакатони', to: '/hackathons' },
                 { label: 'Мої хакатони', to: '/my-hackathons' },
+                { label: 'Мої команди', to: '/teams' },
                 { label: 'Створити хакатон', to: '/create-hackathon' },
                 { label: 'Дашборд', to: '/dashboard' },
                 userId ? { label: 'Профіль', to: `/profile/${userId}` } : { label: 'Увійти', to: '/login' },

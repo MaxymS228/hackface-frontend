@@ -94,7 +94,8 @@ const Register = () => {
           <p className="text-slate-400 text-lg mb-8 leading-relaxed">
             Ми надіслали лист із посиланням для активації на адресу <br/>
             <span className="font-semibold text-white">{email}</span>. <br/><br/>
-            Будь ласка, перейдіть за посиланням у листі, щоб завершити реєстрацію.
+            Будь ласка, перейдіть за посиланням у листі, щоб завершити реєстрацію.<br/>
+            (Якщо лист не прийшов, перевірте папку Спам)
           </p>
           <button
             onClick={() => navigate('/login')}

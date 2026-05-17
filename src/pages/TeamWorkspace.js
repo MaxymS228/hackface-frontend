@@ -193,7 +193,7 @@ const TeamWorkspace = () => {
         <div className="mb-8">
           <button
             onClick={() => navigate(`/hackathons/${hackathonId}/teams`)}
-            className="text-slate-500 hover:text-slate-300 text-sm flex items-center gap-1 mb-4 transition-colors"
+            className="text-slate-300 hover:text-slate-300 text-base flex items-center gap-1 mb-4 transition-colors"
           >
             ← Назад до команд
           </button>

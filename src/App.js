@@ -32,6 +32,7 @@ import ManageSubmissions from './components/ManageSubmissions';
 import ManageMailling from './components/ManageMailling';
 
 //Команди
+import MyTeams from './pages/MyTeams';
 import TeamsPage from './pages/TeamsPage';
 import CreateTeamForm from './components/CreateTeamForm';
 import TeamMatchmaking from './pages/TeamMatchmaking';
@@ -115,6 +116,11 @@ function App() {
             <Route path="/my-hackathons" element={
               <ProtectedRoute>
                 <MyHackathons />
+              </ProtectedRoute>
+            } />
+            <Route path="/teams" element={
+              <ProtectedRoute>
+                <MyTeams />
               </ProtectedRoute>
             } />
             <Route path="/hackathons/:id/teams" element={

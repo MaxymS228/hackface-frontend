@@ -77,12 +77,20 @@ const MyHackathons = () => {
           <h3 className="text-3xl font-bold text-white flex items-center gap-3">
             <Trophy className="text-indigo-400" size={32} /> Мої хакатони
           </h3>
-          <button
-            onClick={() => navigate('/create-hackathon')}
-            className="flex items-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl transition-all shadow-lg shadow-indigo-600/20"
-          >
-            <Plus size={20} /> Створити хакатон
-          </button>
+          <div className="flex flex-col sm:flex-row gap-2">
+            <button
+              onClick={() => navigate('/hackathons')}
+              className="flex items-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl transition-all shadow-lg shadow-indigo-600/20"
+            >
+              <Plus size={20} /> Приєднатися до хакатону
+            </button>
+            <button
+              onClick={() => navigate('/create-hackathon')}
+              className="flex items-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl transition-all shadow-lg shadow-indigo-600/20"
+            >
+              <Plus size={20} /> Створити хакатон
+            </button>
+          </div>
         </div>
 
         {/* Пошук і фільтри */}

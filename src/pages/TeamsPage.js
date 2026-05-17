@@ -52,7 +52,7 @@ const TeamsPage = () => {
 
         // Знаходимо команду поточного юзера
         const myT = teamsData.find(team =>
-          team.members?.some(m => m.user?._id === currentUserId)
+          team.members?.some(m => m.userId?._id === currentUserId)
         );
         setMyTeam(myT || null);
       }
@@ -286,14 +286,20 @@ const TeamsPage = () => {
 
                       {/* Аватари учасників */}
                       <div className="flex -space-x-2">
-                        {(team.members || []).slice(0, 5).map((m, i) => (
-                          <div
-                            key={i}
-                            className="w-7 h-7 rounded-full bg-indigo-600 border-2 border-slate-900 flex items-center justify-center text-xs font-bold text-white"
-                          >
-                            {m.user?.name?.substring(0, 1).toUpperCase() || '?'}
-                          </div>
-                        ))}
+                        {(team.members || []).slice(0, 5).map((m, i) => {
+                          const name = m.userId?.name || m.user?.name || '';
+                          const letter = name ? name.substring(0, 1).toUpperCase() : '?';
+                          return (
+                            <div
+                              key={i}
+                              className={`w-7 h-7 rounded-full border-2 border-slate-900 flex items-center justify-center text-xs font-bold text-white ${
+                                letter === '?' ? 'bg-slate-600' : 'bg-indigo-600'
+                              }`}
+                            >
+                              {letter}
+                            </div>
+                          );
+                        })}
                         {(team.members?.length || 0) > 5 && (
                           <div className="w-7 h-7 rounded-full bg-slate-700 border-2 border-slate-900 flex items-center justify-center text-xs text-slate-400">
                             +{team.members.length - 5}

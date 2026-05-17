@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { 
-  Layout, Users, Code, Award, Settings, LogOut, Terminal,
-  Menu, X, Loader2, ExternalLink, Search, Trophy, Plus, Calendar, ChevronRight, List
-} from 'lucide-react';
+import { Layout, Users, Code, Award, Settings, LogOut, Terminal, Menu, X, Loader2, ExternalLink, Search, Trophy, Plus, Calendar, ChevronRight, List, Crown } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 const Dashboard = () => {
@@ -159,34 +156,80 @@ const Dashboard = () => {
                 {/* Картка команди */}
                 <div className="lg:col-span-2 bg-slate-900/40 border border-slate-800/60 rounded-[2rem] p-8 shadow-2xl relative overflow-hidden backdrop-blur-sm">
                   <div className="absolute -top-24 -right-24 w-64 h-64 bg-indigo-600/10 rounded-full blur-[100px]" />
-                  
+
                   <div className="flex justify-between items-center mb-8 relative z-10">
                     <h3 className="text-2xl font-bold text-white flex items-center gap-3">
-                      <Users className="text-indigo-400" size={28} /> Ваша команда
+                      <Users className="text-indigo-400" size={28} /> Ваші команди
                     </h3>
+                    {dashboardData.teams?.length > 0 && (
+                      <button
+                        onClick={() => navigate('/teams')}
+                        className="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-xl text-sm font-medium transition-all border border-slate-700"
+                      >
+                        <List size={16} /> Всі команди
+                      </button>
+                    )}
                   </div>
 
                   <div className="relative z-10">
                     {dashboardData.teams && dashboardData.teams.length > 0 ? (
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        {dashboardData.teams.map((t) => (
-                          <div key={t._id} className="p-6 bg-slate-800/40 rounded-2xl border border-slate-700/50 hover:border-indigo-500/50 transition-all group cursor-pointer">
-                            <h4 className="text-xl font-bold text-white mb-2 group-hover:text-indigo-400 transition-colors">{t.teamId?.name}</h4>
-                            <span className="px-3 py-1 bg-indigo-500/10 text-indigo-400 text-xs rounded-full border border-indigo-500/20">{t.role}</span>
-                          </div>
-                        ))}
-                      </div>
+                      <>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                          {dashboardData.teams.slice(0, 4).map((team) => (
+                            <div
+                              key={team._id}
+                              onClick={() => navigate(`/hackathons/${team.hackathonId}/teams/${team._id}`)}
+                              className="p-5 bg-gradient-to-br from-slate-800/60 to-indigo-950/30 rounded-2xl border border-slate-700/50 hover:border-indigo-500/40 transition-all group cursor-pointer"
+                            >
+                              <div className="flex items-start justify-between mb-3">
+                                <h4 className="font-bold text-white group-hover:text-indigo-400 transition-colors line-clamp-1">
+                                  {team.name}
+                                </h4>
+                                {team.isCaptain && (
+                                  <span className="flex items-center gap-1 text-[10px] bg-amber-500/10 text-amber-400 border border-amber-500/20 px-1.5 py-0.5 rounded-full shrink-0 ml-2">
+                                    <Crown size={8} /> Капітан
+                                  </span>
+                                )}
+                              </div>
+
+                              {team.hackathonTitle && (
+                                <p className="text-xs text-slate-500 mb-3 flex items-center gap-1 truncate">
+                                  <Trophy size={10} className="text-amber-400 shrink-0" />
+                                  {team.hackathonTitle}
+                                </p>
+                              )}
+
+                              <div className="flex items-center justify-between">
+                                <span className="text-xs px-2 py-0.5 bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 rounded-full">
+                                  {team.teamRole === 'Captain' ? 'Капітан' : 'Учасник'}
+                                </span>
+                                <ChevronRight size={14} className="text-slate-600 group-hover:text-indigo-400 group-hover:translate-x-0.5 transition-all" />
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+
+                        {/* Кнопка всі команди */}
+                        <button
+                          onClick={() => navigate('/teams')}
+                          className="w-full py-3 bg-slate-800/50 hover:bg-slate-800 border border-slate-700/50 hover:border-slate-700 text-slate-400 hover:text-white rounded-2xl text-sm font-medium transition-all flex items-center justify-center gap-2"
+                        >
+                          <List size={16} /> Всі мої команди ({dashboardData.teams.length})
+                        </button>
+                      </>
                     ) : (
                       <div className="text-center py-16 border-2 border-dashed border-slate-800 rounded-3xl">
                         <div className="w-20 h-20 bg-slate-800/50 rounded-full flex items-center justify-center mx-auto mb-6">
                           <Users className="text-slate-600" size={40} />
                         </div>
-                        <p className="text-slate-400 mb-8 max-w-xs mx-auto">Ви ще не приєдналися до жодної команди. Час знайти однодумців!</p>
-                        <button 
+                        <p className="text-slate-400 mb-8 max-w-xs mx-auto">
+                          Ви ще не приєдналися до жодної команди. Час знайти однодумців!
+                        </p>
+                        <button
                           onClick={() => navigate('/hackathons')}
                           className="px-8 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl transition-all flex items-center gap-2 mx-auto shadow-lg shadow-indigo-600/30"
                         >
-                          <Search size={18}/> Знайти команду
+                          <Search size={18} /> Знайти команду
                         </button>
                       </div>
                     )}
